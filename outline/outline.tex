@@ -1,0 +1,94 @@
+\documentclass[12pt]{article}
+
+\usepackage{multicol}
+
+%\usepackage{graphicx}
+%\usepackage{float}
+%\usepackage{apacite}
+
+
+\begin{document}
+
+
+\noindent \\
+\textbf{
+{\Large Population and ODE-based models \\ using Stan and Torsten}}
+
+\ \\
+\textit{Instructors:} Charles Margossian and Yi Zhang \\
+\textit{Length}: 1 day  \\
+
+\ \\
+\textbf{Description:} \\
+This class focuses on fitting models in pharmacometrics.
+We consider the following challenges when building such models: 
+(i) the data generating process involves solutions to ODE systems,
+(ii) these ODEs are embedded in a complicated event schedule,
+and (iii) the data comes from various sources, for instance various patients and studies,
+and the resulting models are hierarchical.
+Note that these properties are not specific to pharmacometrics,
+and arise in other fields such as epidemiology, geology, and econometrics.
+To accommodate a broad audience, we will keep the core concepts general,
+and review basic notions of pharmacometrics, so that participants from all fields
+can do the exercises.
+
+The course covers elementary techniques to solve ODEs in Stan,
+the efficient parametrization of hierarchical models,
+and within-chain parallelization.
+We also introduce \textit{Torsten}, an extension of Stan for pharmacometrics,
+which allows us to seamlessly combine the above methods.
+
+\ \\
+\textbf{Prerequesites:} \\
+Participants should be familiar with Bayesian statistics and basic Stan.
+The requisite material is covered in the introductory tutorial and the tutorial on hierarchical modeling
+at Stan Con 2019, which participants can attend before coming this workshop.
+
+\ \\
+\textbf{Outline:} \\
+%
+  \begin{enumerate}
+   \item Introduction
+   \begin{itemize}
+     \item Modeling framework: build, fit, and criticize
+     \item Review: diagnosing inference
+     \item Review: criticizing the model
+   \end{itemize}
+   %
+   \item Pharmacometrics models
+     \begin{itemize}
+       \item Compartment models
+       \item The event schedule
+       \item When Torsten meets Stan
+       \item \textit{Exercise 1: build, fit, and diagnose a two compartment model}
+     \end{itemize}
+   %
+   %
+   \item Ordinary differential equation based models
+   \begin{itemize}
+     \item Arsenal of tools to solve ODEs
+     \item \textit{Exercise 2: write, fit, and diagnose a two compartment model with the ODE integrator}
+     \item The mixed solver: combining analytical and numerical methods
+     \item \textit{Exercise 3: write and pre-diagnose a Friberg-Karlsson model}
+   \end{itemize}
+   %
+   %
+   \item Population models
+   \begin{itemize}
+     \item Review of hierarchical models
+     \item \textit{Exercise 4: write, fit, and diagnose a population two compartment model}
+     \item Divergent transitions and where they come from
+     \item \textit{Exercise 5: re-parametrize the population two compartment model}
+   \end{itemize}
+   %
+   \item Within Chain parallelization
+   %
+   \item Open discussion and concluding remarks
+ 
+ \end{enumerate}
+
+
+
+
+
+\end{document}
