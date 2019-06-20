@@ -42,7 +42,7 @@ which allows us to seamlessly combine the above methods.
 \textbf{Prerequesites:} \\
 Participants should be familiar with Bayesian statistics and basic Stan.
 The requisite material is covered in the introductory tutorial and the tutorial on hierarchical modeling
-at Stan Con 2019, which participants can attend before coming this workshop.
+at Stan Con 2019, which participants can attend before coming to this workshop.
 
 \ \\
 \textbf{Outline:} \\
@@ -55,21 +55,24 @@ at Stan Con 2019, which participants can attend before coming this workshop.
      \item Review: criticizing the model
    \end{itemize}
    %
-   \item Pharmacometrics models
+   \item Models in pharmacometrics
      \begin{itemize}
        \item Compartment models
        \item The event schedule
-       \item When Torsten meets Stan
+       \item Torsten: a library of Stan functions for pharmacometrics
        \item \textit{Exercise 1: build, fit, and diagnose a two compartment model}
      \end{itemize}
    %
    %
-   \item Ordinary differential equation based models
+   \item Ordinary differential equations in Stan
    \begin{itemize}
      \item Arsenal of tools to solve ODEs
-     \item \textit{Exercise 2: write, fit, and diagnose a two compartment model with the ODE integrator}
-     \item The mixed solver: combining analytical and numerical methods
-     \item \textit{Exercise 3: write and pre-diagnose a Friberg-Karlsson model}
+     \item Matrix exponential solution for linear ODEs
+     \item Numerical integrators for nonlinear ODEs
+     \item \textit{Exercise 2: write, fit, and diagnose a two compartment 
+     model with the ODE integrator}
+     \item Combining analytical and numerical integrators
+     \item \textit{Exercise 3 (optional): the Friberg-Karlsson model}
    \end{itemize}
    %
    %
@@ -81,14 +84,11 @@ at Stan Con 2019, which participants can attend before coming this workshop.
      \item \textit{Exercise 5: re-parametrize the population two compartment model}
    \end{itemize}
    %
-   \item Within Chain parallelization
+   \item Within chain parallelization
    %
    \item Open discussion and concluding remarks
  
  \end{enumerate}
-
-
-
 
 
 \end{document}
