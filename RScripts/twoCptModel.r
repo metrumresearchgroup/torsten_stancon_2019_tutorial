@@ -24,7 +24,7 @@ init <- function() {
 fit <- stan(file = "model/twoCptModel.stan",
             data = data, 
             init = init,
-            iter = 100, chains = 3, cores = 3)
+            iter = 1000, chains = 3, cores = 3)
 
 summary(fit)[1]
 

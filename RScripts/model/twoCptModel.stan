@@ -56,20 +56,19 @@ parameters {
 }
 
 transformed parameters {
-  vector[nObs] concentration;
-  matrix[nEvent, nCmt] mass;
+  row_vector[nObs] concentration;
+  matrix[nCmt, nEvent] mass;
   real theta[nParm] = {CL, Q, VC, VP, ka};
 
-  mass = generalOdeModel_rk45(system, nCmt,
-                              time, amt, rate, ii, evid, cmt,
-                              addl, ss,
-                              theta, biovar, tlag,
-                              rel_tol, abs_tol, max_num_steps);
+  mass = pmx_solve_twocpt(time, amt, rate, ii, evid, cmt, addl, ss,
+                          theta, biovar, tlag);
 
-  // mass = PKModelTwoCpt(time, amt, rate, ii, evid, cmt, addl, ss,
-  //                      theta, biovar, tlag);
+  // mass = pmx_solve_rk45(system, nCmt,
+  //                       time, amt, rate, ii, evid, cmt, addl, ss,
+  //                       theta, biovar, tlag,
+  //                       rel_tol, abs_tol, max_num_steps);
 
-  concentration = mass[iObs, 2] / VC;
+  concentration = mass[2, iObs] / VC;
 }
 
 model {
