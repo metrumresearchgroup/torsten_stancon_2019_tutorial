@@ -29,10 +29,10 @@ init <- function() {
 
 
 # more control over the parameters
-fit <- stan(file = "model/FKModel_solution.stan",
+fit <- stan(file = "model/solutions/FKModel_solution2.stan",
             data = data,
             init = init,
-            chains = 3, iter = 500,
+            chains = 3, iter = 100,
             cores = 3,
             control = list(adapt_delta = 0.95, stepsize = 0.01))
 
@@ -87,5 +87,3 @@ p2 <- ggplot(predPD, aes(x = time, y = neutObs)) +
   geom_ribbon(aes(ymin = lb, ymax = ub), alpha = 0.25)
 
 p2
-
-dev.off()

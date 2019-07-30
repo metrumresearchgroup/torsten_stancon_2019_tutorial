@@ -29,9 +29,9 @@ init <- function() {
 }
 
 # Run Stan
-fit <- stan(file = "model/twoCptPopulationModel.stan",
+fit <- stan(file = "model/solutions/twoCptPopulationModel.stan",
             data = data, init = init,
-            iter = 500, chains = 3, cores = 3)  #,
+            iter = 100, chains = 3, cores = 3)  #,
             # control = list(adapt_delta = 0.95))
 
 # Focus on the parameters we care about

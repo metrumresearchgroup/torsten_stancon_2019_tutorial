@@ -37,13 +37,15 @@ parameters {
 
 transformed parameters {
   real theta[nTheta] = {CL, Q, VC, VP, ka};
-  vector<lower = 0>[nEvent] concentration;
-  vector<lower = 0>[nObs] concentrationObs;
-  matrix<lower = 0>[nEvent, nCmt] mass;
+  row_vector<lower = 0>[nEvent] concentration;
+  row_vector<lower = 0>[nObs] concentrationObs;
+  matrix<lower = 0>[nCmt, nEvent] mass;
 
-  mass = PKModelTwoCpt(time, amt, rate, ii, evid, cmt, addl, ss,
-                       theta, biovar, tlag);
-  concentration = mass[, 2] ./ VC;
+  mass = pmx_solve_twocpt(time, amt, rate, ii, evid, cmt, addl, ss,
+                          theta, biovar, tlag);
+  // mass = PKModelTwoCpt(time, amt, rate, ii, evid, cmt, addl, ss,
+  //                      theta, biovar, tlag);
+  concentration = mass[2, ] ./ VC;
   concentrationObs = concentration[iObs];
 }
 

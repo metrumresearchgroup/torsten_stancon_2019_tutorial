@@ -102,20 +102,20 @@ transformed parameters {
   real theta[nTheta] = {CL, Q, VC, VP, ka,
                         mtt, circ0, gamma};
 
-  vector<lower = 0>[nObsPK] concentrationObs;
-  vector<lower = 0>[nObsPD] neut;
+  row_vector<lower = 0>[nObsPK] concentrationObs;
+  row_vector<lower = 0>[nObsPD] neut;
 
   // matrix to store drug mass and neutrophil count.
-  matrix[nEvent, nCmt] x;
+  matrix[nCmt, nEvent] x;
 
-  x = mixOde2CptModel_rk45(reduced_system, nOde,
-                           time, amt, rate, ii, evid, cmt, addl, ss,
-                           theta, biovar, tlag,
-                           rel_tol, abs_tol, max_num_steps);
+  x = pmx_solve_twocpt_rk45(reduced_system, nOde,
+                            time, amt, rate, ii, evid, cmt, addl, ss,
+                            theta, biovar, tlag,
+                            rel_tol, abs_tol, max_num_steps);
 
-  concentrationObs = x[iObsPK, 2] ./ VC;
+  concentrationObs = x[2, iObsPK] ./ VC;
 
-  neut = x[iObsPD, 8] + circ0;
+  neut = x[8, iObsPD] + circ0;
 }
 
 model {

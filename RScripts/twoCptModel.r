@@ -21,7 +21,7 @@ init <- function() {
 }
 
 # Run Stan
-fit <- stan(file = "model/twoCptModel.stan",
+fit <- stan(file = "model/solutions/twoCptModel_solution2.stan",
             data = data, 
             init = init,
             iter = 1000, chains = 3, cores = 3)

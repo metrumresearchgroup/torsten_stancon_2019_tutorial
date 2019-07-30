@@ -50,27 +50,27 @@ transformed parameters {
   vector[nTheta] theta_pop = 
     to_vector({CL_pop, Q_pop, VC_pop, VP_pop, ka_pop});
 
-  vector<lower = 0>[nEvent] concentration;
-  vector<lower = 0>[nObs] concentrationObs;
-  matrix<lower = 0>[nEvent, nCmt] mass;
+  row_vector<lower = 0>[nEvent] concentration;
+  row_vector<lower = 0>[nObs] concentrationObs;
+  matrix<lower = 0>[nCmt, nEvent] mass;
 
   for (j in 1:nSubjects) {
     // Construct individual parameter
     theta[j, ] = 
       to_array_1d(exp(sqrt(omega) .* alpha'[, j]) .* theta_pop);
 
-    mass[start[j]:end[j]] = PKModelTwoCpt(time[start[j]:end[j]],
-                                          amt[start[j]:end[j]],
-                                          rate[start[j]:end[j]],
-                                          ii[start[j]:end[j]],
-                                          evid[start[j]:end[j]],
-                                          cmt[start[j]:end[j]],
-                                          addl[start[j]:end[j]],
-                                          ss[start[j]:end[j]],
-                                          theta[j, ], biovar, tlag);
+    mass[, start[j]:end[j]] = pmx_solve_twocpt(time[start[j]:end[j]],
+                                               amt[start[j]:end[j]],
+                                               rate[start[j]:end[j]],
+                                               ii[start[j]:end[j]],
+                                               evid[start[j]:end[j]],
+                                               cmt[start[j]:end[j]],
+                                               addl[start[j]:end[j]],
+                                               ss[start[j]:end[j]],
+                                               theta[j, ], biovar, tlag);
 
     concentration[start[j]:end[j]] = 
-                      mass[start[j]:end[j], 2] / theta[j, 3];
+                      mass[2, start[j]:end[j]] / theta[j, 3];
   }
 
   concentrationObs = concentration[iObs];
@@ -98,18 +98,18 @@ generated quantities {
 
   // simulate data for a new patient.
   real cObsNewPred[nObs];
-  matrix<lower = 0>[nEvent, nCmt] massNew;
+  matrix<lower = 0>[nCmt, nEvent] massNew;
   matrix[nSubjects, nTheta] alphaNew;
   real thetaNew[nSubjects, nTheta];
-  vector<lower = 0>[nEvent] concentrationNew;
-  vector<lower = 0>[nObs] concentrationObsNew;
+  row_vector<lower = 0>[nEvent] concentrationNew;
+  row_vector<lower = 0>[nObs] concentrationObsNew;
 
   for (j in 1:nSubjects) {
     for (i in 1:nTheta) alphaNew[j, i] = normal_rng(0, 1);
     thetaNew[j, ] = to_array_1d(exp(sqrt(omega) .* alphaNew'[, j]) .* theta_pop);
 
-    massNew[start[j]:end[j]]
-      = PKModelTwoCpt(time[start[j]:end[j]],
+    massNew[, start[j]:end[j]]
+      = pmx_solve_twocpt(time[start[j]:end[j]],
                       amt[start[j]:end[j]],
                       rate[start[j]:end[j]],
                       ii[start[j]:end[j]],
@@ -120,7 +120,7 @@ generated quantities {
                       thetaNew[j, ], biovar, tlag);
 
     concentrationNew[start[j]:end[j]] =
-      massNew[start[j]:end[j], 2] / thetaNew[j, 3];
+      massNew[2, start[j]:end[j]] / thetaNew[j, 3];
 
     concentrationObsNew = concentrationNew[iObs];
   }

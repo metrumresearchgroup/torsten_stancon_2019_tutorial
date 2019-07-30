@@ -48,23 +48,23 @@ parameters {
 transformed parameters {
   vector<lower = 0>[nTheta] 
     theta_pop = to_vector({CL_pop, Q_pop, VC_pop, VP_pop, ka_pop});
-  vector<lower = 0>[nEvent] concentration;
-  vector<lower = 0>[nObs] concentrationObs;
-  matrix<lower = 0>[nEvent, nCmt] mass;
+  row_vector<lower = 0>[nEvent] concentration;
+  row_vector<lower = 0>[nObs] concentrationObs;
+  matrix<lower = 0>[nCmt, nEvent] mass;
 
   for (j in 1:nSubjects) {
-    mass[start[j]:end[j]] = PKModelTwoCpt(time[start[j]:end[j]],
-                                          amt[start[j]:end[j]],
-                                          rate[start[j]:end[j]],
-                                          ii[start[j]:end[j]],
-                                          evid[start[j]:end[j]],
-                                          cmt[start[j]:end[j]],
-                                          addl[start[j]:end[j]],
-                                          ss[start[j]:end[j]],
-                                          theta[j, ], biovar, tlag);
+    mass[, start[j]:end[j]] = pmx_solve_twocpt(time[start[j]:end[j]],
+                                               amt[start[j]:end[j]],
+                                               rate[start[j]:end[j]],
+                                               ii[start[j]:end[j]],
+                                               evid[start[j]:end[j]],
+                                               cmt[start[j]:end[j]],
+                                               addl[start[j]:end[j]],
+                                               ss[start[j]:end[j]],
+                                               theta[j, ], biovar, tlag);
 
     concentration[start[j]:end[j]] = 
-                      mass[start[j]:end[j], 2] / theta[j, 3];
+                      mass[2, start[j]:end[j]] / theta[j, 3];
   }
 
   concentrationObs = concentration[iObs];
