@@ -1,0 +1,103 @@
+#+TITLE: Numerical ODE integrators in Stan/Torsten
+#+BEAMER_FRAME_LEVEL: 2
+#+AUTHOR: Yi Zhang, Charles Margossian
+#+LaTeX_CLASS: beamer
+
+#+startup: beamer
+
+** Nonlinear ODEs without analytical solution
+#+begin_src stan
+  functions {
+    real[] reaction(real t, real[] x, real[] p, real[] r, int[] i){
+      /* k1r = k_-1 */
+      real k1  = p[1];
+      real k1r = p[2];
+      real k2  = p[3];
+      real S  = x[1];
+      real E  = x[2];
+      real ES = x[3];
+      real P  = x[4];
+      real dSdt  = k1r * ES - k1 * S * E;
+      real dEdt  = k1r * ES + k2 * ES - k1 * S * E;
+      real dESdt = k1 * S * E - k1r * ES - k2 * ES;
+      real dPdt  = k2 * ES;
+
+      return {dSdt, dEdt, dESdt, dPdt};
+    }
+  }
+#+end_src   
+
+** Numerical integrators
+    - Runge-Kutta 4th/5th (=rk45=)
+      + non-stiff equations
+      + Most popular, try this if you don't know the nature of the ODE, or what you're doing, or both.
+    - Backward differentiation formula (=bdf=)
+      + stiff equations
+      + More expensive to use
+    - Adams-Moulton
+      + non-stiff equations
+      + higher-order of accuracy(do you really need it?)
+      + scales better with number of steps
+
+** Numerical integrators
+
+| Integrators | Stan                  | Torsten                   |
+|-------------+-----------------------+---------------------------|
+| =rk45=      | =integrate_ode_rk45=  | =pmx_integrate_ode_rk45=  |
+| =BDF=       | =integrate_ode_bdf=   | =pmx_integrate_ode_bdf=   |
+| =Adams=     | =integrate_ode_adams= | =pmx_integrate_ode_adams= |
+
+#+begin_src stan
+  real[ , ] pmx_integrate_ode_rk45(ODE_RHS, real[] y0, real t0, real[] ts, real[] theta, real[] x_r, int[] x_i, real rtol = 1.e-6, real atol = 1.e-6, int max_step = 1e6);
+#+end_src
+- =ODE_RHS=: ODE right-hand-side $f$ in $y' = f(y, t, \theta, x_r, x_i)$.
+- =y0=: initial condition at time =t0=.
+- =t0=: initial time.
+- =ts=: times at which we require a solution.
+- =theta=: parameters to be passed to $f$.
+- =x_r=: real data to be passed to $f$.
+- =x_i=: integer data to be passed to $f$.
+
+** Exercise
+We consider the kinetics of an autocatalytic reaction cite:robertson_numerical_1966. The
+structure of the reactions is 
+\begin{align*}
+A &\xrightarrow{k_1} B\\
+B+B &\xrightarrow{k_2} C + B\\
+B+C&\xrightarrow{k_3} C + A,
+\end{align*}
+where $k_1$, $k_2$, $k_3$ are the rate
+constants and $A$, $B$ and $C$ are the chemical species
+involved. The corresponding ODEs are
+\begin{align*}
+x_1' &= -k_1x_1 + k_3x_2x_3\\
+x_2' &=  k_1x_1 - k_2y_2^2 - k_3x_2x_3\\
+x_3' &=  k_2y_2^2
+\end{align*}
+Given $k_1=0.04, k_2=1.0e4, k_3=3.0e7$, we seek the
+initial condition for $x_1(t=0)$.
+
+** Exercise
+- Write the =functions= block for $f$.
+- What's the initial conditions for $x_2$ and $x_3$?
+- Which numerical integrator to use? Why? Did you try other options?
+
+** Exercise
+How to build & run?
+**** Edit/Add =cmdstan/make/local=
+#+BEGIN_SRC sh
+  TORSTEN_MPI = 1  # flag on torsten's MPI solvers
+  CXXFLAGS += -isystem /usr/local/include    # path to MPI library's headers
+#+END_SRC
+**** Build in =cmdstan=
+#+BEGIN_SRC sh
+  make ../example-models/ttpn2/ttpn2_group
+#+END_SRC
+**** Run
+#+BEGIN_SRC sh
+./chem sample adapt delta=0.95 random seed=1104508041 data file=chem.data.R init=chem.init.R
+#+END_SRC
+
+** Reference
+\bibliography{../../examples/chemical_reactions/autocatalysis}
+bibliographystyle:plain
