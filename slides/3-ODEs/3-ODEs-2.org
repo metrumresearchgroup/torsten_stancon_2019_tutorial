@@ -1,4 +1,5 @@
 #+TITLE: Numerical ODE integrators in Stan/Torsten
+#+OPTIONS: toc:nil
 #+BEAMER_FRAME_LEVEL: 2
 #+AUTHOR: Yi Zhang, Charles Margossian
 #+LaTeX_CLASS: beamer
