@@ -84,14 +84,16 @@
    \begin{itemize}
      \item Introduction and modeling framework
      \item Pharmacometrics models
-     \item Ordinary differential equation based models
+     \item Ordinary differential equation(ODE) based models
+     \item Numerical ODE integrators
    \end{itemize}
    
    \ \\
    Day 2
    \begin{itemize}
      \item Population models
-     \item Within chain parallelization
+     \item Group/Population ODE integrators and MPI parallelisation
+     \item Group/Population solvers
    \end{itemize}
 \end{frame}
 
@@ -105,6 +107,22 @@
   \begin{center}
     \includegraphics[width=3cm]{../metworx}
   \end{center}
+
+  \begin{figure}
+    \centering
+    \begin{minipage}{0.3\textwidth}
+      \centering
+      \includegraphics[width=0.9\textwidth]{./metworx_efficiencies}
+    \end{minipage}
+    \begin{minipage}{0.3\textwidth}
+      \centering
+      \includegraphics[width=0.9\textwidth]{./metworx_desktop}
+    \end{minipage}
+    \begin{minipage}{0.3\textwidth}
+      \centering
+      \includegraphics[width=0.9\textwidth]{./metworx_decisionmakingtools}
+    \end{minipage}
+  \end{figure}
   
 \end{frame}
 
@@ -122,8 +140,8 @@
   \ \\
   We will be using:
   \begin{itemize}
-    \item Torsten v0.86
-    \item RStan v2.19.1
+    \item Torsten v0.87
+    \item RStan v2.19.2
     \item ggplot, plyr, tidyr, dplyr
   \end{itemize}
 

@@ -1,0 +1,157 @@
+% Created 2019-07-30 Tue 14:05
+% Intended LaTeX compiler: pdflatex
+\documentclass[presentation]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[newfloat]{minted}
+\usepackage{caption}
+\usetheme{default}
+\author{Yi Zhang}
+\date{\today}
+\title{Numerical ODE group/population integrators in Torsten}
+\hypersetup{
+ pdfauthor={Yi Zhang},
+ pdftitle={Numerical ODE group/population integrators in Torsten},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 25.3.1 (Org mode 9.1.3)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+\begin{frame}[fragile,label={sec:org498f494}]{ODE group integrators}
+ \begin{center}
+\begin{tabular}{ll}
+Single ODE system & ODE group\\
+\hline
+\texttt{pmx\_integrate\_ode\_rk45} & \texttt{pmx\_integrate\_ode\_group\_rk45}\\
+\texttt{pmx\_integrate\_ode\_bdf} & \texttt{pmx\_integrate\_ode\_group\_bdf}\\
+\texttt{pmx\_integrate\_ode\_adams} & \texttt{pmx\_integrate\_ode\_group\_adams}\\
+\end{tabular}
+
+\end{center}
+
+\begin{columns}
+\begin{column}{0.45\columnwidth}
+\begin{block}{Single ODE system}
+\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
+real[,]
+pmx_integrate_ode_xxx(
+      f,
+      real[] y0, real t0,
+      real[] ts,
+      real[] theta,
+      real[] x_r, int[] x_i,
+      ...);
+\end{minted}
+\end{block}
+\end{column}
+
+\begin{column}{0.55\columnwidth}
+\begin{block}{ODE group}
+\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
+matrix
+pmx_integrate_ode_group_xxx(
+     f,
+     real[ , ] y0, real t0,
+     int[] len, real[] ts,
+     real[ , ] theta,
+     real[ , ] x_r, int[ , ] x_i,
+     ...);
+\end{minted}
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org887e05c}]{ODE group integrators}
+ \begin{columns}
+\begin{column}{0.45\columnwidth}
+\begin{block}{Single ODE system}
+\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
+real[ , ]
+pmx_integrate_ode_xxx(
+      f,
+      real[] y0, real t0,
+      real[] ts,
+      real[] theta,
+      real[] x_r, int[] x_i,
+      ...);
+\end{minted}
+\end{block}
+\end{column}
+
+\begin{column}{0.55\columnwidth}
+\begin{block}{ODE group}
+\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
+matrix
+pmx_integrate_ode_group_xxx(
+     f,
+     real[ , ] y0, real t0,
+     int[] len, real[] ts,
+     real[ , ] theta,
+     real[ , ] x_r, int[ , ] x_i,
+     ...);
+\end{minted}
+\end{block}
+\end{column}
+\end{columns}
+\begin{block}{}
+\begin{itemize}
+\item \texttt{len} specifies the length of data for each subject within
+the above ragged arrays, and the size of \texttt{len} is the size
+of the population.
+\item The group integrators return a single matrix ragged
+column-wise. The number of rows equals to the size of ODE system.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org7f849b8}]{Exercise}
+ \begin{block}{autocatalytic reaction model: ODE group version}
+\begin{itemize}
+\item Change the loop with the numerical integrator to use group
+integrator.
+
+\item Edit/Add \texttt{cmdstan/make/local}
+\end{itemize}
+\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
+TORSTEN_MPI = 1  # flag on torsten's MPI solvers
+CXXFLAGS += -isystem /usr/local/include    # path to MPI library's headers
+\end{minted}
+\begin{itemize}
+\item Build in \texttt{cmdstan}
+\end{itemize}
+\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
+make ../example-models/ttpn2/ttpn2_group
+\end{minted}
+\begin{itemize}
+\item Run
+\end{itemize}
+\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
+mpiexec -n 2 -l ./chem_group sample adapt delta=0.95 random seed=1104508041 data file=chem.data.R init=chem.init.R
+\end{minted}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org10c48aa}]{Exercise}
+ \begin{itemize}
+\item What does output say?
+\item How many cores can you use until performance saturates? Why?
+\item Can you do it using Stan's \texttt{map\_rect}? Is there a
+difference in style, output, and performance?
+\end{itemize}
+\end{frame}
+\end{document}
