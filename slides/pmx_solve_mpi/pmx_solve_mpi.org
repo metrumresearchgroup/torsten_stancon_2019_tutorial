@@ -136,19 +136,15 @@ where $x_2(t) = c_e(t)$ and $x_3(t) = \int_0^t h(u) du$ aka cumulative hazard.
 
 ** Exercise
 *** "just walk in a minute ago, literally" mode
-   - Apply =pmx_solve_group_rk45= function.
+   Apply =pmx_solve_group_rk45= function
 *** Intermediate mode
-   - Code args for =pmx_solve_group_rk45= function and
-     apply it. Use input data file =ttp2n.data2.R= as hint.
+   Code =pmx_solve_group_rk45= function and its args. Use input data file =ttp2n.data2.R= as hint.
 *** hard mode
-   - Code ODE
-   - Code args for =pmx_solve_group_rk45= function and
-     apply it. Use input data file =ttp2n.data2.R= as hint.
-   - Code likelihood for harzard and censor event. Use
-     =model= block as hint.
+  Code ODE, =pmx_solve_group_rk45= function and its args,
+  and the likelihood for harzard and censor event. Use input
+  data file =ttp2n.data2.R= and =model= block as hint.
 *** "why bother" mode
-   - Code the model, use input data file =ttp2n.data2.R= 
-     and initial file =ttpn2.init.R= as hint.
+
 ** Exercise
 *** Edit/Add =cmdstan/make/local=
 #+BEGIN_SRC sh

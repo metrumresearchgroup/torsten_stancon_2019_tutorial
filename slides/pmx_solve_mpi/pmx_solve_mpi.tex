@@ -1,4 +1,4 @@
-% Created 2019-07-31 Wed 15:15
+% Created 2019-07-31 Wed 19:08
 % Intended LaTeX compiler: pdflatex
 \documentclass[presentation]{beamer}
 \usepackage[utf8]{inputenc}
@@ -31,7 +31,7 @@
 
 \maketitle
 
-\begin{frame}[fragile,label={sec:org716192a}]{PMX population solvers}
+\begin{frame}[fragile,label={sec:orgb8e2b76}]{PMX population solvers}
  \begin{center}
 \begin{tabular}{ll}
 Single ODE system & ODE group\\
@@ -80,7 +80,7 @@ pmx_solve_group_bdf(f, int nCmt,
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:org1590fdd}]{PMX population solvers}
+\begin{frame}[fragile,label={sec:org04b1bd6}]{PMX population solvers}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 matrix
 pmx_solve_group_bdf(f, int nCmt, int[] len, real[] time, real[] amt, real[] rate, real[] ii, int[] evid, int[] cmt, real[] addl, int[] ss, real[,] theta, real[,] biovar, real[,] tlag, real rel_tol, real abs_tol, int max_step);
@@ -95,7 +95,7 @@ pmx_solve_group_bdf(f, int nCmt, int[] len, real[] time, real[] amt, real[] rate
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orga9077cb}]{Exercise}
+\begin{frame}[label={sec:orgf297fad}]{Exercise}
 We analyze the time to the first grade 2+ peripheral neuropathy
 (PN) event in patients treated with an antibody-drug conjugate (ADC) delivering monomethyl auristatin E
 (MMAE). We will simulate and analyze data using a simplified version of the
@@ -124,7 +124,7 @@ model reported in \cite{lu_time--event_2017}.
 \end{columns}
 \end{frame}
 
-\begin{frame}[label={sec:orgd235adc}]{Exercise}
+\begin{frame}[label={sec:org37139db}]{Exercise}
 Likelihood for time to first PN \(\ge\) 2 event in the \(i^{th}\) patient:
 \begin{align*}
 \lefteqn{L\left(\theta | t_{\text{PN},i}, \text{censor}_i, X_i\right)} \\
@@ -153,7 +153,7 @@ One can see the expression
 as the survival function at time \(t\).
 \end{frame}
 
-\begin{frame}[label={sec:orgd4a629d}]{Exercise}
+\begin{frame}[label={sec:org3e77523}]{Exercise}
 Hazard of PN grade 2+ based on the Weibull distribution,
 with drug effect proportional to effect site concentration of MMAE:
 \begin{align*}
@@ -171,35 +171,23 @@ Overall ODE system including integration of the hazard function:
 where \(x_2(t) = c_e(t)\) and \(x_3(t) = \int_0^t h(u) du\) aka cumulative hazard.
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgc697d7a}]{Exercise}
+\begin{frame}[fragile,label={sec:org86acc89}]{Exercise}
  \begin{block}{"just walk in a minute ago, literally" mode}
-\begin{itemize}
-\item Apply \texttt{pmx\_solve\_group\_rk45} function.
-\end{itemize}
+Apply \texttt{pmx\_solve\_group\_rk45} function
 \end{block}
 \begin{block}{Intermediate mode}
-\begin{itemize}
-\item Code args for \texttt{pmx\_solve\_group\_rk45} function and
-apply it. Use input data file \texttt{ttp2n.data2.R} as hint.
-\end{itemize}
+Code \texttt{pmx\_solve\_group\_rk45} function and its args. Use input data file \texttt{ttp2n.data2.R} as hint.
 \end{block}
 \begin{block}{hard mode}
-\begin{itemize}
-\item Code ODE
-\item Code args for \texttt{pmx\_solve\_group\_rk45} function and
-apply it. Use input data file \texttt{ttp2n.data2.R} as hint.
-\item Code likelihood for harzard and censor event. Use
-\texttt{model} block as hint.
-\end{itemize}
+Code ODE, \texttt{pmx\_solve\_group\_rk45} function and its args,
+and the likelihood for harzard and censor event. Use input
+data file \texttt{ttp2n.data2.R} and \texttt{model} block as hint.
 \end{block}
 \begin{block}{"why bother" mode}
-\begin{itemize}
-\item Code the model, use input data file \texttt{ttp2n.data2.R} 
-and initial file \texttt{ttpn2.init.R} as hint.
-\end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[fragile,label={sec:org2aab45a}]{Exercise}
+
+\begin{frame}[fragile,label={sec:org9c3fb14}]{Exercise}
  \begin{block}{Edit/Add \texttt{cmdstan/make/local}}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
 TORSTEN_MPI = 1         # flag on torsten's MPI solvers
@@ -218,14 +206,14 @@ mpiexec -n 4 -l ttpn2_group sample num_warmup=500 num_samples=500 data file=ttpn
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgb3a97a8}]{Exercise}
+\begin{frame}[fragile,label={sec:org2c09db3}]{Exercise}
  \begin{itemize}
 \item The parallel performance is not optimal, why?
 \item Can you do it using Stan's \texttt{map\_rect}?
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org0cf9e2e}]{Reference}
+\begin{frame}[label={sec:orgfdb92dd}]{Reference}
 \bibliography{ttpn2}
 \bibliographystyle{plain}
 \end{frame}
