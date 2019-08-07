@@ -92,7 +92,7 @@ How to build & run?
 #+END_SRC
 **** Build in =cmdstan=
 #+BEGIN_SRC sh
-  make ../example-models/examples/chemical_reactions/chem_group
+  make ../example-models/examples/chemical_reactions/chem
 #+END_SRC
 **** Run
 #+BEGIN_SRC sh

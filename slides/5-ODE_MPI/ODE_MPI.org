@@ -102,7 +102,7 @@
 #+END_SRC
 - Build in =cmdstan=
 #+BEGIN_SRC sh
-  make ../example-models/ttpn2/ttpn2_group
+  make ../example-models/chemical_reactions/chem_group
 #+END_SRC
 - Run
 #+BEGIN_SRC sh

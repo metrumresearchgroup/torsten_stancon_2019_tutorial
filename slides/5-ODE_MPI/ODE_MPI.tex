@@ -1,4 +1,4 @@
-% Created 2019-07-30 Tue 14:05
+% Created 2019-08-07 Wed 11:45
 % Intended LaTeX compiler: pdflatex
 \documentclass[presentation]{beamer}
 \usepackage[utf8]{inputenc}
@@ -31,7 +31,7 @@
 
 \maketitle
 
-\begin{frame}[fragile,label={sec:org498f494}]{ODE group integrators}
+\begin{frame}[fragile,label={sec:org6b19c45}]{ODE group integrators}
  \begin{center}
 \begin{tabular}{ll}
 Single ODE system & ODE group\\
@@ -76,7 +76,7 @@ pmx_integrate_ode_group_xxx(
 \end{columns}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org887e05c}]{ODE group integrators}
+\begin{frame}[fragile,label={sec:org21a2d23}]{ODE group integrators}
  \begin{columns}
 \begin{column}{0.45\columnwidth}
 \begin{block}{Single ODE system}
@@ -119,7 +119,7 @@ column-wise. The number of rows equals to the size of ODE system.
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org7f849b8}]{Exercise}
+\begin{frame}[fragile,label={sec:org5d6abe5}]{Exercise}
  \begin{block}{autocatalytic reaction model: ODE group version}
 \begin{itemize}
 \item Change the loop with the numerical integrator to use group
@@ -135,7 +135,7 @@ CXXFLAGS += -isystem /usr/local/include    # path to MPI library's headers
 \item Build in \texttt{cmdstan}
 \end{itemize}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
-make ../example-models/ttpn2/ttpn2_group
+make ../example-models/chemical_reactions/chem_group
 \end{minted}
 \begin{itemize}
 \item Run
@@ -146,7 +146,7 @@ mpiexec -n 2 -l ./chem_group sample adapt delta=0.95 random seed=1104508041 data
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org10c48aa}]{Exercise}
+\begin{frame}[fragile,label={sec:orgc153092}]{Exercise}
  \begin{itemize}
 \item What does output say?
 \item How many cores can you use until performance saturates? Why?

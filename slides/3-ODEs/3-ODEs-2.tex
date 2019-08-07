@@ -1,4 +1,4 @@
-% Created 2019-08-07 Wed 11:24
+% Created 2019-08-07 Wed 11:46
 % Intended LaTeX compiler: pdflatex
 \documentclass[presentation]{beamer}
 \usepackage[utf8]{inputenc}
@@ -31,7 +31,7 @@
 
 \maketitle
 
-\begin{frame}[fragile,label={sec:orgf37a7fe}]{Nonlinear ODEs without analytical solution}
+\begin{frame}[fragile,label={sec:org5405190}]{Nonlinear ODEs without analytical solution}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 functions {
   real[] reaction(real t, real[] x, real[] p, real[] r, int[] i){
@@ -54,7 +54,7 @@ functions {
 \end{minted}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgca44523}]{Numerical integrators}
+\begin{frame}[fragile,label={sec:orgd3aa9cd}]{Numerical integrators}
  \begin{itemize}
 \item Runge-Kutta 4th/5th (\texttt{rk45})
 \begin{itemize}
@@ -75,7 +75,7 @@ functions {
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org3a62eb7}]{Numerical integrators}
+\begin{frame}[fragile,label={sec:org3cf5b90}]{Numerical integrators}
  \begin{center}
 \begin{tabular}{lll}
 Integrators & Stan & Torsten\\
@@ -101,7 +101,7 @@ real[ , ] pmx_integrate_ode_rk45(ODE_RHS, real[] y0, real t0, real[] ts, real[] 
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org5ea9614}]{Exercise}
+\begin{frame}[label={sec:orge36e534}]{Exercise}
 We consider the kinetics of an autocatalytic reaction \cite{robertson_numerical_1966}. The
 structure of the reactions is 
 \begin{align*}
@@ -121,7 +121,7 @@ Given \(k_1=0.04, k_2=1.0e4, k_3=3.0e7\), we seek the
 initial condition for \(x_1(t=0)\).
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgab9534a}]{Exercise}
+\begin{frame}[fragile,label={sec:org35c8477}]{Exercise}
  \begin{itemize}
 \item Write the \texttt{functions} block for \(f\).
 \item What's the initial conditions for \(x_2\) and \(x_3\)?
@@ -129,7 +129,7 @@ initial condition for \(x_1(t=0)\).
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org4f54f7f}]{Exercise}
+\begin{frame}[fragile,label={sec:orgd3616bc}]{Exercise}
  How to build \& run?
 \begin{block}{Edit/Add \texttt{cmdstan/make/local}}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
@@ -139,7 +139,7 @@ CXXFLAGS += -isystem /usr/local/include    # path to MPI library's headers
 \end{block}
 \begin{block}{Build in \texttt{cmdstan}}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
-make ../example-models/examples/chemical_reactions/chem_group
+make ../example-models/examples/chemical_reactions/chem
 \end{minted}
 \end{block}
 \begin{block}{Run}
@@ -149,7 +149,7 @@ make ../example-models/examples/chemical_reactions/chem_group
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org0ca32ba}]{Reference}
+\begin{frame}[label={sec:org22a6b1c}]{Reference}
 \bibliography{../../examples/chemical_reactions/autocatalysis}
 \bibliographystyle{plain}
 \end{frame}
