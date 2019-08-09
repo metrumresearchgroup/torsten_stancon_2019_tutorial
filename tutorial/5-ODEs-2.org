@@ -1,7 +1,7 @@
 #+startup: beamer
 
 * Numerical ODE integrators @@latex:| \footnotesize{Yi Zhang}@@
-
+<<chap:num_ode>>
 ** Nonlinear ODEs without analytical solution
 *** kinetics of an autocatalytic reaction cite:robertson_numerical_1966
 The structure of the reactions is 
@@ -13,6 +13,14 @@ B+C \xrightarrow{k_3} C + A,
 where $k_1$, $k_2$, $k_3$ are the rate
 constants and $A$, $B$ and $C$ are the chemical species
 involved. The corresponding ODEs are
+\begin{align*}
+x_1' &= -k_1x_1 + k_3x_2x_3\\
+x_2' &=  k_1x_1 - k_2x_2^2 - k_3x_2x_3\\
+x_3' &=  k_2x_2^2
+\end{align*}
+Given $k_1=0.04, k_2=3.0e7, k_3=1.0e4$, we make inference
+regarding the initial condition for $x_1(t=0)$.
+** Nonlinear ODEs without analytical solution
 \begin{align*}
 x_1' &= -k_1x_1 + k_3x_2x_3\\
 x_2' &=  k_1x_1 - k_2x_2^2 - k_3x_2x_3\\
@@ -32,11 +40,11 @@ x_3' &=  k_2x_2^2
 
 #+begin_src stan
   functions{
-    real[] reaction(real t, real[] x, real[] p, real[] r, int[] i){
+    real[] reaction(real t, real[] x, real[] theta, real[] r, int[] i){
       real dxdt[3];
-      real k1 = p[1];
-      real k2 = p[2];
-      real k3 = p[3];
+      real k1 = theta[1];
+      real k2 = theta[2];
+      real k3 = theta[3];
       dxdt[1] = -k1*x[1] + k3*x[2]*x[3];
       dxdt[2] =  k1*x[1] - k3*x[2]*x[3] - k2*(x[2])^2;
       dxdt[3] =  k2*(x[2])^2;
@@ -83,11 +91,11 @@ x_3' &=  k_2x_2^2
 - Hierarchical model for $x0[1]$
 #+BEGIN_SRC stan
   model {
-    x0_mu ~ lognormal(log(2.0), 0.5);    /* hyperparam */
+    y0_mu ~ lognormal(log(2.0), 0.5);
     for (i in 1:nsub) {
-      x0_1[i] ~ lognormal(x0_mu, 0.5);   /* loop each subject, sample initial condition */
+      y0_1[i] ~ lognormal(y0_mu, 0.5);    
     }
-    sigma ~ cauchy(0, 1);                /* observation uncertainty */
+    sigma ~ cauchy(0, 0.5); 
     obs ~ lognormal(log(x3), sigma);
   }
 #+END_SRC
@@ -104,8 +112,12 @@ x_3' &=  k_2x_2^2
   }
 #+END_SRC
 
+** Exercise
 ***  Given above data and model, write the rest of Stan code.
-- Hint: see =chem.data.R= and =chem.init.R= .
+- Hint: use =chem.stan= as template, also see =chem.data.R= and =chem.init.R=.
+- Reaction begins with $A$(on which is also what we'd
+  like to make inference), the other two spiecies are
+  non-existent at the beginning of the reaction.
 - Which numerical integrator are you using? Why?
 
 ** Exercise
@@ -117,7 +129,7 @@ How to build & run?
 #+END_SRC
 **** Build in =cmdstan=
 #+BEGIN_SRC sh
-  make ../example-models/examples/chemical_reactions/chem
+  make path_to_workshop/RScript/model/chemical_reactions/chem
 #+END_SRC
 **** Run
 #+BEGIN_SRC sh

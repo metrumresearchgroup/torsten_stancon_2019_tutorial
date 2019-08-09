@@ -1,12 +1,12 @@
 functions{
-  real[] reaction(real t, real[] x, real[] p, real[] r, int[] i){
+  real[] reaction(real t, real[] x, real[] theta, real[] r, int[] i){
     real dxdt[3];
-    real p1 = p[1];
-    real p2 = p[2];
-    real p3 = p[3];
-    dxdt[1] = -p1*x[1] + p2*x[2]*x[3];
-    dxdt[2] =  p1*x[1] - p2*x[2]*x[3] - p3*(x[2])^2;
-    dxdt[3] =  p3*(x[2])^2;
+    real k1 = theta[1];
+    real k2 = theta[2];
+    real k3 = theta[3];
+    dxdt[1] = -k1*x[1] + k3*x[2]*x[3];
+    dxdt[2] =  k1*x[1] - k3*x[2]*x[3] - k2*(x[2])^2;
+    dxdt[3] =  k2*(x[2])^2;
     return dxdt;
   }
 }
@@ -25,7 +25,7 @@ transformed data {
   real t0 = 0.0;
   real xr[0];
   int xi[0];
-  real theta[3] = {0.04, 1.0e4, 3.0e7};
+  real theta[3] = {0.04, 3.0e7, 1.0e4};
   i1[1] = 1;
   i2[1] = len[1];
   for (i in 2:nsub) {

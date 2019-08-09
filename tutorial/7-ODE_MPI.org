@@ -90,7 +90,12 @@
 *** autocatalytic reaction model: ODE group version 
 - Change the loop with the numerical integrator to use group
   integrator.
+- Remeber the return of the group integrator is a matrix
+  + nb. of rows: nb. of states
+  + nb. of cols: nb. of /total/ results-extraction time points.
 
+** Exercise
+*** Build and run
 - Edit/Add =cmdstan/make/local=
 #+BEGIN_SRC sh
   TORSTEN_MPI = 1  # flag on torsten's MPI solvers
@@ -106,7 +111,6 @@ mpiexec -n 2 -l ./chem_group sample adapt delta=0.95 random seed=1104508041 data
 #+END_SRC
 
 ** Exercise
-- What does output say?
-- How many cores can you use until performance saturates? Why?
-- Can you do it using Stan's =map_rect=? Is there a
-  difference in style, output, and performance?
+  + What does output say?
+  + How many cores can you use until performance saturates? Why?
+  + (optional)Can you do it using Stan's =map_rect=? Is there a difference in style, output, and performance?
