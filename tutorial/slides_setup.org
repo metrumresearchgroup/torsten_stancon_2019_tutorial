@@ -11,3 +11,4 @@
 
 #+latex_header: \definecolor{MRGGreen}{rgb}{0, 0.350, 0.200}
 #+latex_header: \graphicspath{{./figures/}}
+#+latex_header: \usepackage{chapterbib}

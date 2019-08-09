@@ -123,3 +123,9 @@ How to build & run?
 #+BEGIN_SRC sh
 ./chem sample adapt delta=0.95 random seed=1104508041 data file=chem.data.R init=chem.init.R
 #+END_SRC
+
+** Reference
+bibliographystyle:plain
+\bibliography{./ref}
+
+

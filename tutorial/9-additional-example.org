@@ -1,0 +1,83 @@
+#+startup: beamer
+
+* Additional nonlinear ODE example @@latex:\\ \footnotesize{Yi Zhang}@@
+** Friberg-Karlsson semi-mechanistic model \cite{Friberg:2002}
+#+begin_latex
+  \begin{center}
+    \includegraphics[width=8.5cm]{Friberg-Karlsson_drug}
+  \end{center}
+#+end_latex
+** ODE system of F-K model
+  \begin{align*}\label{eq:FK}
+  y_{\mathrm{prol}}' &= k_{\mathrm{tr}} y_{\mathrm{prol}} (1 - {\color{red}E_{\mathrm{drug}}})\left(\frac{Circ_0}
+    {y_{\mathrm{circ}}}\right)^\gamma - k_{\mathrm{tr}}y_{\mathrm{prol}} \\
+  y_{\mathrm{tr1}}' &= k_{\mathrm{tr}} y_{\mathrm{prol}} - k_{\mathrm{tr}} y_{\mathrm{tr1}} \\
+  y_{\mathrm{tr2}}' &= k_{\mathrm{tr}} y_{\mathrm{tr1}} - k_{\mathrm{tr}} y_{\mathrm{tr2}} \\
+  y_{\mathrm{tr3}}' &= k_{\mathrm{tr}} y_{\mathrm{tr2}} - k_{\mathrm{tr}} y_{\mathrm{tr3}} \\
+  y_{\mathrm{circ}}' &= k_{\mathrm{tr}} y_{\mathrm{tr3}} - k_{\mathrm{tr}} y_{\mathrm{circ}} 
+  \end{align*}
+
+  where $E_\mathrm{drug} = \alpha \frac{y_{\mathrm{cent}}}{V_{\mathrm{cent}}}$,
+  $ktr = 4 / MTT$,
+  and $\alpha \approx 3e-4$.
+ - $y_\mathrm{cent}$ is obtained from a two compartment model.
+ - Our PK/PD model therefore has a total of 8 equations.
+ - This problem can be solved using \texttt{pmx\_solve\_*}.
+** Coupled PK-PD system
+  Alternatively, we may elect to solve the PK ODEs \textcolor{MRGGreen}{analytically} 
+  and the PD ODEs \textcolor{MRGGreen}{numerically}.
+  - This can yield some speedup, in particular for problems that require ODE solutions and sensitivities (e.g \cite{Margossian:2017b}).
+#+BEGIN_SRC stan
+    real[] pmx_solve_twocpt_rk45(reduced_ODE_system, int nOde, real[] time, real[] amt, real[] rate, real[] ii, int[] evid, int[] cmt, real[] addl, int[] ss, real[] theta, real[] biovar, real[] tlag, real rel_tol, real abs_tol, real max_step)
+#+END_SRC
+
+** Coupled PK-PD system
+#+BEGIN_SRC stan
+    real[] pmx_solve_twocpt_rk45(reduced_ODE_system, int nOde, real[] time, real[] amt, real[] rate, real[] ii, int[] evid, int[] cmt, real[] addl, int[] ss, real[] theta, real[] biovar, real[] tlag, real rel_tol, real abs_tol, real max_step)
+#+END_SRC
+ - we now pass a "reduced system".
+ - we specify the number of ODEs to be solved numerically, not the number of compartments.
+ - =theta= now contains the parameters for the two cpt model, followed by the parameters that get passed to the numerical solver:
+#+BEGIN_SRC stan
+  theta = {CL, Q, VC, VP, ka, /* ... */ };
+#+END_SRC   
+
+** Reduced system
+#+BEGIN_SRC stan
+  real[] reduced_system(real time, real[] y, real[] yPK, real[] theta, real[] x_r, int[] x_i) {
+    real[3] dydt;
+    /* .... */
+    return dydt;
+  }
+#+END_SRC
+/\textcolor{MRGGreen}{Exercise 4 (optional)}: Write, fit, and diagnose a Friberg-Karlsson model with a two compartment with first order absorption PK. Use \texttt{FKModel.r} and \texttt{data/FKModel.data.r}./
+** Exercise
+/Write, fit, and diagnose a Friberg-Karlsson model with a two compartment with first order absorption PK. Use \texttt{FKModel.r} and \texttt{data/FKModel.data.r}./
+ - You may either use \texttt{pmx\_solve\_*} or \texttt{pmx\_solve\_twocpt\_*}.
+ - Use $\alpha = 3e-4$ and estimate all other 8 ODE coefficients,
+  i.e. $\theta = \{ CL, Q, VC, VP, ka, MTT, circ0, \gamma \}$.
+ - The initial state for the neutrophil count is $Circ_0$. 
+  Either edit the event schedule to reflect this at time 0, 
+  or write the solution to your ODEs as a deviation from the baseline.
+** Exercise
+  - This exercise entails a few subtleties; in the interest of time we won't go through it in class.
+  - Here are however results I get from 3 chains with 500 iterations you can use as a benchmark.
+** Exercise
+#+begin_latex
+  \begin{center}
+    \includegraphics[width=7cm]{FKModelPlots002.pdf}
+  \end{center}
+#+end_latex
+** Exercise
+#+begin_latex
+  \begin{center}
+    \includegraphics[width=7cm]{FKPairs}
+  \end{center}
+#+end_latex
+** Exercise
+#+begin_latex
+  \begin{center}
+    \includegraphics[width=7cm]{FKModelPlots006.pdf}
+  \end{center}
+#+end_latex
+** References

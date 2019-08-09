@@ -1,0 +1,72 @@
+#+startup: beamer
+
+* Ordinary differential equations in Stan and Torsten @@latex:\\ \footnotesize{Yi Zhang}@@
+** Arsenal of tools
+#+begin_latex
+  \begin{center}
+    \includegraphics[width=4.5in]{odeSolvers.png}
+  \end{center}
+#+end_latex
+For some examples, see \cite{Margossian:2017}.
+*** 
+  - the "optimized - applicable" spectrum is a heuristic; counter-examples can be built.
+  - coding effort may also be a criterion
+**  Matrix exponential
+  Consider a system of linear ODEs:
+  $$ y^\prime(t) = Ky(t) $$
+  where $K$ is a constant matrix.
+
+  Then
+  $$ y(t) = e^{tK} y_0 $$
+** Matrix Exponential
+  $$ e^{tK} = \sum_{n=0}^{\infty} \dfrac{(tK)^n}{n!} = I + tK + \frac{(tK)^2}{2} + \frac{(tK)^3}{3!} + ... $$
+** Matrix Exponential
+  For example, the two compartment model generates the following matrix:
+  \[ K = \begin{bmatrix}
+       -ka & 0 & 0 \\
+       ka & - (CL + Q) / Vc & Q / Vp \\
+       0 & Q / V_c & - Q / V_p
+     \end{bmatrix}
+  \]
+** Linear ODE solver in Torsten
+#+BEGIN_SRC stan
+  matrix = pmx_solve_linode(real[] time, real[] amt, real[] rate,
+                       real[] ii, int[] evid, int[] cmt,
+                       real[] addl, int[] ss,
+                       matrix K, real[] biovar, real[] tlag)
+#+END_SRC
+**  Numerical integrator
+#+begin_src stan
+  real[ , ] pmx_integrate_ode_rk45(ODE_RHS, real[] y0, real t0, real[] ts, real[] theta, real[] x_r, int[] x_i, real rtol = 1.e-6, real atol = 1.e-6, int max_step = 1e6);
+#+end_src
+- =ODE_RHS=: ODE right-hand-side $f$ in $y' = f(y, t, \theta, x_r, x_i)$.
+- =y0=: initial condition at time =t0=.
+- =t0=: initial time.
+- =ts=: times at which we require a solution.
+- =theta=: parameters to be passed to $f$.
+- =x_r=: real data to be passed to $f$.
+- =x_i=: integer data to be passed to $f$.
+- =rtol=, =atol=, and =max_step= are optional control
+  parameters for /relative tolerance/, /absolute tolerance/, and /max number of time steps/, respectively. Their default values have no theoretical justification.
+** System function
+#+BEGIN_SRC stan
+  functions {
+    real[] system(real time, real[] y, 
+                  real[] theta, real[] x_r, int[] x_i) {
+    real dydt[3];
+    real CL = theta[1];
+    real Q = theta[2];
+
+    /* .... */
+
+    return dydt;
+    }
+  }
+#+END_SRC
+** Torsten function
+#+BEGIN_SRC stan
+    matrix pmx_solve_rk45(ODE_system, int nCmt, real[] time, real[] amt, real[] rate, real[] ii, int[] evid, int[] cmt, real[] addl, int[] ss, real[] theta, real[] biovar, real[] tlag, real rel_tol, real abs_tol, int max_step);
+#+END_SRC
+/\textcolor{MRGGreen}{Exercise 3}: Write, fit, and diagnose the two compartment model using the =pmx_solve_rk45= function./
+
+** Reference

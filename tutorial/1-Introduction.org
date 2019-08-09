@@ -63,3 +63,6 @@
     \sigma^2 \sim & \mathrm{Normal}(1, 1)
   \end{align*}
 
+
+** Reference
+
