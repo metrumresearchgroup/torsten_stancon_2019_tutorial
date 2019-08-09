@@ -1,0 +1,65 @@
+#+startup: beamer
+
+* Introduction and modeling framework @@latex:\\ \small{Charles Margossian}@@
+
+** Preliminary question
+   - Why Bayesian in a field such as pharmacometrics?
+   - Example - /Bayesian aggregation of average data: an application in drug development/ cite:Weber:2018
+
+** Modeling framework
+*** Box's loop
+#+begin_latex :file box_loop.pdf :packages '(("" "tikz")) :border 1em :results raw
+    \begin{figure}[htbp]
+      \begin{center}
+        \begin{tikzpicture}
+          [
+          Box/.style={rectangle, draw=black!, fill=green!0, thick, minimum size=10mm},
+          Gray/.style={rectangle, draw=black!, fill=gray!35, thick, minimum size=1mm},
+          Round/.style={circle, draw=black!, fill=green!0, thick, minimum size=1mm},
+          ]
+          % Nodes
+          \node[Round] (Data) at(0, 1.5) {Data};
+          \node[Box] (Model) at(-3, 0) {Model};
+          \node[Box] (Infer) at(0, 0) {Infer};
+          \node[Box] (Crit) at (3, 0) {Criticize};
+
+          % Lines
+          \path [->, draw, thick] (Model) -- (Infer);
+          \path [->, draw, thick] (Infer) -- (Crit);
+          \path [->, draw, thick] (Crit) edge[bend left] (Model);
+          \path [->, draw, thick] (Data) -- (Infer);
+
+          % 
+
+        \end{tikzpicture}
+      \end{center}
+    \end{figure}
+#+end_latex
+#+label: fig:box_loop
+
+** Inference
+   - find the set of parameters consistent with our model and our data
+   - approximate this set with draws from the posterior distribution
+** Sampling algorithm
+   - Use the NUTS to sample $\pi (\theta | y)$
+   - Requires users the specify $\log \pi(\theta, y) = \log \pi(y | \theta) + \log \pi(\theta)$
+** The "criticism" step
+  This step can be broken up in two parts:
+  1. did we sample from the correct distribution?
+  2. does our model capture the characteristics of the data we care about?
+** Diagnosing the inference algorithm
+  - look at the trace and the density plots
+  - look at $\hat R$ and effective number of samples
+  - have any warning messages been issued, i.e. divergent transitions ?
+** Example: fitting a linear model
+  Likelihood:
+  \begin{align*}
+    Y \sim \mathrm{Normal}(x \beta, \sigma^2)
+  \end{align*}
+
+  Prior:
+  \begin{align*}
+    \beta \sim & \mathrm{Normal}(2, 1) \\
+    \sigma^2 \sim & \mathrm{Normal}(1, 1)
+  \end{align*}
+

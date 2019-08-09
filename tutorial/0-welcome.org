@@ -1,0 +1,57 @@
+#+startup: beamer
+
+* Course information
+** 
+*** Instructors
+  - Charles Margossian
+    + Columbia University, Department of Statistics
+  - Yi Zhang
+    + Metrum Research Group
+*** TA
+  - Steve Bronder
+    + Capital One
+** Outline
+*** Day 1
+    + Introduction and modeling framework
+    + Pharmacometrics models
+    + Ordinary differential equation(ODE) based models
+    + Numerical ODE integrators
+*** Day 2
+    + Population models
+    + Group/Population ODE integrators and MPI parallelisation
+    + Group/Population solvers and MPI parallelisation
+** Logistics
+  METWORX\texttrademark{}, cloud-based modeling & simulation platform by Metrum Research Group.
+#+begin_latex
+  \begin{center}
+    \includegraphics[width=3cm]{metworx}
+  \end{center}
+
+  \begin{figure}
+    \centering
+    \begin{minipage}{0.3\textwidth}
+      \centering
+      \includegraphics[width=0.9\textwidth]{metworx_efficiencies}
+    \end{minipage}
+    \begin{minipage}{0.3\textwidth}
+      \centering
+      \includegraphics[width=0.9\textwidth]{metworx_desktop}
+    \end{minipage}
+    \begin{minipage}{0.3\textwidth}
+      \centering
+      \includegraphics[width=0.9\textwidth]{metworx_decisionmakingtools}
+    \end{minipage}
+  \end{figure}
+#+end_latex
+
+** Logistics
+  Workshop package
+  - R scripts and Stan files to do the exercises
+  - These slides
+  - Outline of the course
+  - pAdditional documentation
+
+  We will be using:
+  - Torsten v0.87
+  - RStan v2.19.2
+  - ggplot, plyr, tidyr, dplyr

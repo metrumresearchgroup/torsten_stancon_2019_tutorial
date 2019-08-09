@@ -1,0 +1,13 @@
+#+DATE: StanCon 2019, Cambridge UK @@latex:\\@@ August 2019
+#+OPTIONS: H:2 toc:1 num:t
+#+startup: beamer
+#+LATEX_CLASS: beamer
+#+LATEX_CLASS_OPTIONS: [presentation]
+
+#+BEAMER_HEADER: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Outline}\tableofcontents[currentsection,hideallsubsections,subsubsectionstyle=hide]\end{frame}}
+#+latex_header: \usetheme{default}
+#+latex_header: \usepackage{tikz}
+#+latex_header: \usetikzlibrary{positioning}
+
+#+latex_header: \definecolor{MRGGreen}{rgb}{0, 0.350, 0.200}
+#+latex_header: \graphicspath{{./figures/}}

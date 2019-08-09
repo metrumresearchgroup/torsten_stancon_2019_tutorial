@@ -1,0 +1,156 @@
+% Created 2019-08-07 Wed 11:46
+% Intended LaTeX compiler: pdflatex
+\documentclass[presentation]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[newfloat]{minted}
+\usepackage{caption}
+\usetheme{default}
+\author{Yi Zhang, Charles Margossian}
+\date{\today}
+\title{Numerical ODE integrators in Stan/Torsten}
+\hypersetup{
+ pdfauthor={Yi Zhang, Charles Margossian},
+ pdftitle={Numerical ODE integrators in Stan/Torsten},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 25.3.1 (Org mode 9.1.3)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+\begin{frame}[fragile,label={sec:org5405190}]{Nonlinear ODEs without analytical solution}
+ \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
+functions {
+  real[] reaction(real t, real[] x, real[] p, real[] r, int[] i){
+    /* k1r = k_-1 */
+    real k1  = p[1];
+    real k1r = p[2];
+    real k2  = p[3];
+    real S  = x[1];
+    real E  = x[2];
+    real ES = x[3];
+    real P  = x[4];
+    real dSdt  = k1r * ES - k1 * S * E;
+    real dEdt  = k1r * ES + k2 * ES - k1 * S * E;
+    real dESdt = k1 * S * E - k1r * ES - k2 * ES;
+    real dPdt  = k2 * ES;
+
+    return {dSdt, dEdt, dESdt, dPdt};
+  }
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgd3aa9cd}]{Numerical integrators}
+ \begin{itemize}
+\item Runge-Kutta 4th/5th (\texttt{rk45})
+\begin{itemize}
+\item non-stiff equations
+\item Most popular, try this if you don't know the nature of the ODE, or what you're doing, or both.
+\end{itemize}
+\item Backward differentiation formula (\texttt{bdf})
+\begin{itemize}
+\item stiff equations
+\item More expensive to use
+\end{itemize}
+\item Adams-Moulton
+\begin{itemize}
+\item non-stiff equations
+\item higher-order of accuracy(do you really need it?)
+\item scales better with number of steps
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org3cf5b90}]{Numerical integrators}
+ \begin{center}
+\begin{tabular}{lll}
+Integrators & Stan & Torsten\\
+\hline
+\texttt{rk45} & \texttt{integrate\_ode\_rk45} & \texttt{pmx\_integrate\_ode\_rk45}\\
+\texttt{BDF} & \texttt{integrate\_ode\_bdf} & \texttt{pmx\_integrate\_ode\_bdf}\\
+\texttt{Adams} & \texttt{integrate\_ode\_adams} & \texttt{pmx\_integrate\_ode\_adams}\\
+\end{tabular}
+
+\end{center}
+
+\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
+real[ , ] pmx_integrate_ode_rk45(ODE_RHS, real[] y0, real t0, real[] ts, real[] theta, real[] x_r, int[] x_i, real rtol = 1.e-6, real atol = 1.e-6, int max_step = 1e6);
+\end{minted}
+\begin{itemize}
+\item \texttt{ODE\_RHS}: ODE right-hand-side \(f\) in \(y' = f(y, t, \theta, x_r, x_i)\).
+\item \texttt{y0}: initial condition at time \texttt{t0}.
+\item \texttt{t0}: initial time.
+\item \texttt{ts}: times at which we require a solution.
+\item \texttt{theta}: parameters to be passed to \(f\).
+\item \texttt{x\_r}: real data to be passed to \(f\).
+\item \texttt{x\_i}: integer data to be passed to \(f\).
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label={sec:orge36e534}]{Exercise}
+We consider the kinetics of an autocatalytic reaction \cite{robertson_numerical_1966}. The
+structure of the reactions is 
+\begin{align*}
+A &\xrightarrow{k_1} B\\
+B+B &\xrightarrow{k_2} C + B\\
+B+C&\xrightarrow{k_3} C + A,
+\end{align*}
+where \(k_1\), \(k_2\), \(k_3\) are the rate
+constants and \(A\), \(B\) and \(C\) are the chemical species
+involved. The corresponding ODEs are
+\begin{align*}
+x_1' &= -k_1x_1 + k_3x_2x_3\\
+x_2' &=  k_1x_1 - k_2y_2^2 - k_3x_2x_3\\
+x_3' &=  k_2y_2^2
+\end{align*}
+Given \(k_1=0.04, k_2=1.0e4, k_3=3.0e7\), we seek the
+initial condition for \(x_1(t=0)\).
+\end{frame}
+
+\begin{frame}[fragile,label={sec:org35c8477}]{Exercise}
+ \begin{itemize}
+\item Write the \texttt{functions} block for \(f\).
+\item What's the initial conditions for \(x_2\) and \(x_3\)?
+\item Which numerical integrator to use? Why? Did you try other options?
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label={sec:orgd3616bc}]{Exercise}
+ How to build \& run?
+\begin{block}{Edit/Add \texttt{cmdstan/make/local}}
+\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
+TORSTEN_MPI = 1  # flag on torsten's MPI solvers
+CXXFLAGS += -isystem /usr/local/include    # path to MPI library's headers
+\end{minted}
+\end{block}
+\begin{block}{Build in \texttt{cmdstan}}
+\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
+make ../example-models/examples/chemical_reactions/chem
+\end{minted}
+\end{block}
+\begin{block}{Run}
+\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
+./chem sample adapt delta=0.95 random seed=1104508041 data file=chem.data.R init=chem.init.R
+\end{minted}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org22a6b1c}]{Reference}
+\bibliography{../../examples/chemical_reactions/autocatalysis}
+\bibliographystyle{plain}
+\end{frame}
+\end{document}
