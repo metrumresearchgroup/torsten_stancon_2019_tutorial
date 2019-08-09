@@ -1,0 +1,116 @@
+#+startup: beamer
+
+* Models in pharmacometrics @@latex:\\ \small{Charles Margossian}@@
+**  What is the effect of a treatment on a patient?
+  - /pharmacokinetics (PK)/: how is the drug absorbed in the body?
+  - /pharmacodynamics (PD)/: once it is absorbed, what are its effects? 
+ 
+** Example: Two compartment model
+#+begin_latex
+  \begin{center}
+    \includegraphics[width=4in]{TwoCptNice.png}
+  \end{center}
+#+end_latex
+
+** Two compartment model
+\begin{align*}
+   y_\mathrm{gut}' &= -k_a y_\mathrm{gut} \\
+   y_\mathrm{cent}' &= k_a y_\mathrm{gut} - \left(\frac{CL}{V_\mathrm{cent}} + \frac{Q}{V_\mathrm{cent}} \right) y_\mathrm{cent} +  \frac{Q}{V_\mathrm{peri}} y_\mathrm{peri} \\
+   y_\mathrm{peri}' &= \frac{Q}{V_\mathrm{cent}} y_\mathrm{cent} - \frac{Q}{V_\mathrm{peri}} y_\mathrm{peri}
+   \label{eq:2Cpt}
+\end{align*}
+
+** Example 2: Bone mineral density model from \cite{Peterson:2012}
+#+begin_latex
+  \begin{center}
+    \includegraphics[width = 3in]{RiggsBoneModel.jpg}
+  \end{center}
+#+end_latex
+
+** Two compartment model
+Denote $\theta = \{CL, Q, VC, VP, K_a \}$, the ODE coefficients.
+Then
+$$ y' = f(y, t, \theta) $$
+    
+Given an initial condition $y_0 = y(t_0)$, solving the above ODE gives us
+the \textcolor{MRGGreen}{\textit{natural evolution}} of the system at any given time point.
+
+** The event schedule
+   An event can be:
+  - \textcolor{MRGGreen}{Sate changer}: an (exterior) intervention that alters the state of the system; for example a bolus dosing or the beginning of an infusion.
+  - \textcolor{MRGGreen}{Observation}: a measurement of a quantity of interest at a certain time.
+
+** Drug concentration in a patient's blood
+#+begin_latex
+  \begin{center}
+    \includegraphics[width=3.5in]{multiple_doses.png}
+  \end{center}
+#+end_latex
+
+** The event schedule
+ - There is no general theory for the event schedule :(
+ - The modeling software NONMEM\textregistered proposes a convention for pharmacometrics, which we adopt in Torsten.
+
+**  Torsten functions
+Torsten functions offers additional built-in functions to simulate data from a compartment model.
+#+begin_latex  
+  \begin{center}
+    \includegraphics[width=1.5in]{torstenLogo.png}
+  \end{center}
+#+end_latex
+  
+  Each Torsten function requires users to specify:
+  - a system of ODEs and a method to solve it.
+  - An event schedule.
+** Torsten functions
+#+BEGIN_SRC stan
+  matrix = pmx_solve_onecpt(real[] time, real[] amt, real[] rate,
+                                 real[] ii, int[] evid, int[] cmt,
+                                 real[] addl, int[] ss, real[] theta,
+                                 real[] biovar, real[] tlag);
+
+  matrix = pmx_solve_twocpt(real[] time, real[] amt, real[] rate,
+                                 real[] ii, int[] evid, int[] cmt,
+                                 real[] addl, int[] ss, real[] theta,
+                                 real[] biovar, real[] tlag);
+#+END_SRC
+- Analytically solutions for the one/two cpt models.
+- Event schedule
+- ODE coefficients, e.g. $\theta = \{CL, Q, VC, VP, ka \}$ for two-cpt model.
+- bio-availibility fraction and lag times. 
+
+** Example 
+***  Clinical trial
+    - Single patient
+    - Bolus doses with 1200 mg, administered every 12 hours, for a total of 15 doses.
+    - Many observations for the first, second, and last doses.
+    - Additional observation every 12 hours.
+**** Note: the observation are plasma drug concentration measurement.
+**** See \texttt{data/twoCpt.data.r}.
+
+** Example
+*** Model
+   - two compartment model with first-order absorption
+   - prior information based on clinical trial conducted on a large population
+   - normal error for the plasma drug concentration measurement.
+** Example
+*** Prior
+#+BEGIN_SRC stan
+    CL ~ lognormal(log(10), 0.25);
+    Q ~ lognormal(log(15), 0.5);
+    VC ~ lognormal(log(35), 0.25);
+    VP ~ lognormal(log(105), 0.5);
+    ka ~ lognormal(log(2.5), 1);
+    sigma ~ cauchy(0, 1);
+#+END_SRC
+  
+*** Likelihood
+    \begin{align*}
+      \log(cObs) \sim \mathrm{Normal}\left( \log \left(\frac{y_2}{VC} \right), \sigma^2 \right)
+    \end{align*}
+  /\textcolor{MRGGreen}{Exercise 1}: write and fit this model, using \texttt{twoCptModel.r} and  \texttt{model/twoCptModel.stan}./
+  /\textcolor{MRGGreen}{Exercise 2}: Write a generated quantities block and do posterior predictive checks./
+
+** Resources
+  - Torsten repository: \url{https://github.com/metrumresearchgroup/Torsten}
+  - Torsten User manual (on GitHub and in the workshop folder).

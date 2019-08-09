@@ -1,4 +1,4 @@
-% Created 2019-08-08 Thu 20:18
+% Created 2019-08-08 Thu 21:45
 % Intended LaTeX compiler: pdflatex
 \documentclass[presentation]{beamer}
 \usepackage[utf8]{inputenc}
@@ -43,8 +43,8 @@
 
 
 \section{Course information}
-\label{sec:orgaf9428b}
-\begin{frame}[label={sec:org2d36595}]{}
+\label{sec:orgce26dec}
+\begin{frame}[label={sec:org3b4ae29}]{}
 \begin{block}{Instructors}
 \begin{itemize}
 \item Charles Margossian
@@ -66,7 +66,7 @@
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org040622e}]{Outline}
+\begin{frame}[label={sec:org506524a}]{Outline}
 \begin{block}{Day 1}
 \begin{itemize}
 \item Introduction and modeling framework
@@ -83,7 +83,7 @@
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orga7c033a}]{Logistics}
+\begin{frame}[label={sec:org6f5ae62}]{Logistics}
 METWORX\texttrademark{}, cloud-based modeling \& simulation platform by Metrum Research Group.
 \begin{latex}
 \begin{center}
@@ -108,7 +108,7 @@ METWORX\texttrademark{}, cloud-based modeling \& simulation platform by Metrum R
 \end{latex}
 \end{frame}
 
-\begin{frame}[label={sec:org01b4750}]{Logistics}
+\begin{frame}[label={sec:org059a5be}]{Logistics}
 Workshop package
 \begin{itemize}
 \item R scripts and Stan files to do the exercises
@@ -126,16 +126,16 @@ We will be using:
 \end{frame}
 
 \section{Introduction and modeling framework \\ \small{Charles Margossian}}
-\label{sec:org94f5371}
+\label{sec:org66a4d60}
 
-\begin{frame}[label={sec:orge104f66}]{Preliminary question}
+\begin{frame}[label={sec:org72ff91b}]{Preliminary question}
 \begin{itemize}
 \item Why Bayesian in a field such as pharmacometrics?
 \item Example - \emph{Bayesian aggregation of average data: an application in drug development} \cite{Weber:2018}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:orgef49733}]{Modeling framework}
+\begin{frame}[label={sec:org2574de9}]{Modeling framework}
 \begin{block}{Box's loop}
 \begin{latex}
 \begin{figure}[htbp]
@@ -167,33 +167,33 @@ We will be using:
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orga13d3a1}]{Inference}
+\begin{frame}[label={sec:org142b07f}]{Inference}
 \begin{itemize}
 \item find the set of parameters consistent with our model and our data
 \item approximate this set with draws from the posterior distribution
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org290978e}]{Sampling algorithm}
+\begin{frame}[label={sec:orgf0e326c}]{Sampling algorithm}
 \begin{itemize}
 \item Use the NUTS to sample \(\pi (\theta | y)\)
 \item Requires users the specify \(\log \pi(\theta, y) = \log \pi(y | \theta) + \log \pi(\theta)\)
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgacee756}]{The "criticism" step}
+\begin{frame}[label={sec:org83e9374}]{The "criticism" step}
 This step can be broken up in two parts:
 \begin{enumerate}
 \item did we sample from the correct distribution?
 \item does our model capture the characteristics of the data we care about?
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:orgfa36135}]{Diagnosing the inference algorithm}
+\begin{frame}[label={sec:orga0bfeff}]{Diagnosing the inference algorithm}
 \begin{itemize}
 \item look at the trace and the density plots
 \item look at \(\hat R\) and effective number of samples
 \item have any warning messages been issued, i.e. divergent transitions ?
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org6d22fad}]{Example: fitting a linear model}
+\begin{frame}[label={sec:org560b740}]{Example: fitting a linear model}
 Likelihood:
 \begin{align*}
   Y \sim \mathrm{Normal}(x \beta, \sigma^2)
@@ -206,10 +206,162 @@ Prior:
 \end{align*}
 \end{frame}
 
-\section{Numerical ODE integrators \\ \footnotesize{Yi Zhang}}
-\label{sec:org7e6714e}
+\section{Models in pharmacometrics \\ \small{Charles Margossian}}
+\label{sec:orgd4b0b39}
+\begin{frame}[label={sec:org76e70f5}]{What is the effect of a treatment on a patient?}
+\begin{itemize}
+\item \emph{pharmacokinetics (PK)}: how is the drug absorbed in the body?
+\item \emph{pharmacodynamics (PD)}: once it is absorbed, what are its effects?
+\end{itemize}
+\end{frame}
 
-\begin{frame}[label={sec:org34848bd}]{Nonlinear ODEs without analytical solution}
+\begin{frame}[label={sec:org3f746e3}]{Example: Two compartment model}
+\begin{latex}
+\begin{center}
+  \includegraphics[width=4in]{TwoCptNice.png}
+\end{center}
+\end{latex}
+\end{frame}
+
+\begin{frame}[label={sec:org50cfb55}]{Two compartment model}
+\begin{align*}
+   y_\mathrm{gut}' &= -k_a y_\mathrm{gut} \\
+   y_\mathrm{cent}' &= k_a y_\mathrm{gut} - \left(\frac{CL}{V_\mathrm{cent}} + \frac{Q}{V_\mathrm{cent}} \right) y_\mathrm{cent} +  \frac{Q}{V_\mathrm{peri}} y_\mathrm{peri} \\
+   y_\mathrm{peri}' &= \frac{Q}{V_\mathrm{cent}} y_\mathrm{cent} - \frac{Q}{V_\mathrm{peri}} y_\mathrm{peri}
+   \label{eq:2Cpt}
+\end{align*}
+\end{frame}
+
+\begin{frame}[label={sec:org8c4151e}]{Example 2: Bone mineral density model from \cite{Peterson:2012}}
+\begin{latex}
+\begin{center}
+  \includegraphics[width = 3in]{RiggsBoneModel.jpg}
+\end{center}
+\end{latex}
+\end{frame}
+
+\begin{frame}[label={sec:org4c9c4ee}]{Two compartment model}
+Denote \(\theta = \{CL, Q, VC, VP, K_a \}\), the ODE coefficients.
+Then
+$$ y' = f(y, t, \theta) $$
+
+Given an initial condition \(y_0 = y(t_0)\), solving the above ODE gives us
+the \textcolor{MRGGreen}\{\textit{natural evolution}\} of the system at any given time point.
+\end{frame}
+
+\begin{frame}[label={sec:org3491103}]{The event schedule}
+An event can be:
+\begin{itemize}
+\item \textcolor{MRGGreen}{Sate changer}: an (exterior) intervention that alters the state of the system; for example a bolus dosing or the beginning of an infusion.
+\item \textcolor{MRGGreen}{Observation}: a measurement of a quantity of interest at a certain time.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label={sec:org6a082f1}]{Drug concentration in a patient's blood}
+\begin{latex}
+\begin{center}
+  \includegraphics[width=3.5in]{multiple_doses.png}
+\end{center}
+\end{latex}
+\end{frame}
+
+\begin{frame}[label={sec:orge32ff95}]{The event schedule}
+\begin{itemize}
+\item There is no general theory for the event schedule :(
+\item The modeling software NONMEM\textregistered proposes a convention for pharmacometrics, which we adopt in Torsten.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label={sec:orgd1d3d7a}]{Torsten functions}
+Torsten functions offers additional built-in functions to simulate data from a compartment model.
+\begin{latex}
+\begin{center}
+  \includegraphics[width=1.5in]{torstenLogo.png}
+\end{center}
+\end{latex}
+
+Each Torsten function requires users to specify:
+\begin{itemize}
+\item a system of ODEs and a method to solve it.
+\item An event schedule.
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile,label={sec:orgdd361df}]{Torsten functions}
+ \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
+matrix = pmx_solve_onecpt(real[] time, real[] amt, real[] rate,
+                               real[] ii, int[] evid, int[] cmt,
+                               real[] addl, int[] ss, real[] theta,
+                               real[] biovar, real[] tlag);
+
+matrix = pmx_solve_twocpt(real[] time, real[] amt, real[] rate,
+                               real[] ii, int[] evid, int[] cmt,
+                               real[] addl, int[] ss, real[] theta,
+                               real[] biovar, real[] tlag);
+\end{minted}
+\begin{itemize}
+\item Analytically solutions for the one/two cpt models.
+\item Event schedule
+\item ODE coefficients, e.g. \(\theta = \{CL, Q, VC, VP, ka \}\) for two-cpt model.
+\item bio-availibility fraction and lag times.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label={sec:org003fad1}]{Example}
+\begin{block}{Clinical trial}
+\begin{itemize}
+\item Single patient
+\item Bolus doses with 1200 mg, administered every 12 hours, for a total of 15 doses.
+\item Many observations for the first, second, and last doses.
+\item Additional observation every 12 hours.
+\end{itemize}
+\begin{block}{Note: the observation are plasma drug concentration measurement.}
+\end{block}
+\begin{block}{See \texttt{data/twoCpt.data.r}.}
+\end{block}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org90a7d73}]{Example}
+\begin{block}{Model}
+\begin{itemize}
+\item two compartment model with first-order absorption
+\item prior information based on clinical trial conducted on a large population
+\item normal error for the plasma drug concentration measurement.
+\end{itemize}
+\end{block}
+\end{frame}
+\begin{frame}[fragile,label={sec:org09afdf4}]{Example}
+ \begin{block}{Prior}
+\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
+CL ~ lognormal(log(10), 0.25);
+Q ~ lognormal(log(15), 0.5);
+VC ~ lognormal(log(35), 0.25);
+VP ~ lognormal(log(105), 0.5);
+ka ~ lognormal(log(2.5), 1);
+sigma ~ cauchy(0, 1);
+\end{minted}
+\end{block}
+
+\begin{block}{Likelihood}
+\begin{align*}
+  \log(cObs) \sim \mathrm{Normal}\left( \log \left(\frac{y_2}{VC} \right), \sigma^2 \right)
+\end{align*}
+\emph{\textcolor{MRGGreen}{Exercise 1}: write and fit this model, using \texttt{twoCptModel.r} and  \texttt{model/twoCptModel.stan}.}
+\emph{\textcolor{MRGGreen}{Exercise 2}: Write a generated quantities block and do posterior predictive checks.}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org826c671}]{Resources}
+\begin{itemize}
+\item Torsten repository: \url{https://github.com/metrumresearchgroup/Torsten}
+\item Torsten User manual (on GitHub and in the workshop folder).
+\end{itemize}
+\end{frame}
+
+\section{Numerical ODE integrators \\ \footnotesize{Yi Zhang}}
+\label{sec:org5b16eb5}
+
+\begin{frame}[label={sec:orga78120b}]{Nonlinear ODEs without analytical solution}
 \begin{block}{kinetics of an autocatalytic reaction \cite{robertson_numerical_1966}}
 The structure of the reactions is 
 \begin{equation*}
@@ -233,7 +385,7 @@ Write Stan function for the above ODE's RHS.
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org8cbacbf}]{Stan function for autocatalytic kinetics}
+\begin{frame}[fragile,label={sec:orgc560291}]{Stan function for autocatalytic kinetics}
  \begin{align*}
 x_1' &= -k_1x_1 + k_3x_2x_3\\
 x_2' &=  k_1x_1 - k_2x_2^2 - k_3x_2x_3\\
@@ -259,7 +411,7 @@ functions{
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org4b7195c}]{Numerical integrators}
+\begin{frame}[fragile,label={sec:org5783e9d}]{Numerical integrators}
  \begin{itemize}
 \item Runge-Kutta 4th/5th (\texttt{rk45})
 \begin{itemize}
@@ -280,7 +432,7 @@ functions{
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgc6835fc}]{Numerical integrators}
+\begin{frame}[fragile,label={sec:orgc4f5daf}]{Numerical integrators}
  \begin{center}
 \begin{tabular}{lll}
 Integrators & Stan & Torsten\\
@@ -307,7 +459,7 @@ real[ , ] pmx_integrate_ode_rk45(ODE_RHS, real[] y0, real t0, real[] ts, real[] 
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:orge3b7aa4}]{Exercise}
+\begin{frame}[fragile,label={sec:org1c3ad50}]{Exercise}
  \begin{itemize}
 \item In each of 8 experiments performed \(x3\) is observed.
 \item Hierarchical model for \(x0[1]\)
@@ -324,7 +476,7 @@ model {
 \end{minted}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgb831eaa}]{Exercise}
+\begin{frame}[fragile,label={sec:org2a5bac2}]{Exercise}
  \begin{block}{Data available for the inference}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 data {
@@ -345,7 +497,7 @@ data {
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org7679c9f}]{Exercise}
+\begin{frame}[fragile,label={sec:org58071cd}]{Exercise}
  How to build \& run?
 \begin{block}{Edit/Add \texttt{cmdstan/make/local}}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
@@ -366,9 +518,9 @@ make ../example-models/examples/chemical_reactions/chem
 \end{frame}
 
 \section{ODE group integrators \\ \footnotesize{Yi Zhang}}
-\label{sec:org60dfd0e}
+\label{sec:org2e0d4da}
 
-\begin{frame}[fragile,label={sec:orgd16f8a2}]{ODE group integrators}
+\begin{frame}[fragile,label={sec:org7d34172}]{ODE group integrators}
  \begin{center}
 \begin{tabular}{ll}
 Single ODE system & ODE group\\
@@ -413,7 +565,7 @@ pmx_integrate_ode_group_xxx(
 \end{columns}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgcdd6cb7}]{ODE group integrators}
+\begin{frame}[fragile,label={sec:orga37dec9}]{ODE group integrators}
  \begin{columns}
 \begin{column}{0.45\columnwidth}
 \begin{block}{Single ODE system}
@@ -456,7 +608,7 @@ column-wise. The number of rows equals to the size of ODE system.
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgd399e3e}]{Exercise}
+\begin{frame}[fragile,label={sec:org87e98d6}]{Exercise}
  \begin{block}{autocatalytic reaction model: ODE group version}
 \begin{itemize}
 \item Change the loop with the numerical integrator to use group
@@ -483,7 +635,7 @@ mpiexec -n 2 -l ./chem_group sample adapt delta=0.95 random seed=1104508041 data
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org4b88d5e}]{Exercise}
+\begin{frame}[fragile,label={sec:orgac4f031}]{Exercise}
  \begin{itemize}
 \item What does output say?
 \item How many cores can you use until performance saturates? Why?
@@ -493,9 +645,9 @@ difference in style, output, and performance?
 \end{frame}
 
 \section{PMX population solvers \\ \footnotesize{Yi Zhang}}
-\label{sec:org72b6b06}
+\label{sec:orgb5536b6}
 
-\begin{frame}[fragile,label={sec:org6fe3e89}]{PMX population solvers}
+\begin{frame}[fragile,label={sec:org41a5290}]{PMX population solvers}
  \begin{center}
 \begin{tabular}{ll}
 Single ODE system & ODE group\\
@@ -544,7 +696,7 @@ pmx_solve_group_bdf(f, int nCmt,
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:orgd346cb4}]{PMX population solvers}
+\begin{frame}[fragile,label={sec:org3d184fa}]{PMX population solvers}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 matrix
 pmx_solve_group_bdf(f, int nCmt, int[] len, real[] time, real[] amt, real[] rate, real[] ii, int[] evid, int[] cmt, real[] addl, int[] ss, real[,] theta, real[,] biovar, real[,] tlag, real rel_tol, real abs_tol, int max_step);
@@ -559,7 +711,7 @@ pmx_solve_group_bdf(f, int nCmt, int[] len, real[] time, real[] amt, real[] rate
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orgf097975}]{Exercise}
+\begin{frame}[label={sec:orgbc7159f}]{Exercise}
 We analyze the time to the first grade 2+ peripheral neuropathy
 (PN) event in patients treated with an antibody-drug conjugate (ADC) delivering monomethyl auristatin E
 (MMAE). We will simulate and analyze data using a simplified version of the
@@ -588,7 +740,7 @@ model reported in \cite{lu_time--event_2017}.
 \end{columns}
 \end{frame}
 
-\begin{frame}[label={sec:org5156336}]{Exercise}
+\begin{frame}[label={sec:org74a3493}]{Exercise}
 Likelihood for time to first PN \(\ge\) 2 event in the \(i^{th}\) patient:
 \begin{align*}
 \lefteqn{L\left(\theta | t_{\text{PN},i}, \text{censor}_i, X_i\right)} \\
@@ -617,7 +769,7 @@ One can see the expression
 as the survival function at time \(t\).
 \end{frame}
 
-\begin{frame}[label={sec:orgd2c9df0}]{Exercise}
+\begin{frame}[label={sec:org4dda62a}]{Exercise}
 Hazard of PN grade 2+ based on the Weibull distribution,
 with drug effect proportional to effect site concentration of MMAE:
 \begin{align*}
@@ -635,7 +787,7 @@ Overall ODE system including integration of the hazard function:
 where \(x_2(t) = c_e(t)\) and \(x_3(t) = \int_0^t h(u) du\) aka cumulative hazard.
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgc4d135e}]{Exercise}
+\begin{frame}[fragile,label={sec:org2eb4042}]{Exercise}
  \begin{block}{"just walk in a minute ago, literally" mode}
 Apply \texttt{pmx\_solve\_group\_rk45} function
 \end{block}
@@ -651,7 +803,7 @@ data file \texttt{ttp2n.data2.R} and \texttt{model} block as hint.
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgb63939c}]{Exercise}
+\begin{frame}[fragile,label={sec:orgaa6afc0}]{Exercise}
  \begin{block}{Edit/Add \texttt{cmdstan/make/local}}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
 TORSTEN_MPI = 1         # flag on torsten's MPI solvers
@@ -670,19 +822,19 @@ mpiexec -n 4 -l ttpn2_group sample num_warmup=500 num_samples=500 data file=ttpn
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org460dd0f}]{Exercise}
+\begin{frame}[fragile,label={sec:org00da842}]{Exercise}
  \begin{itemize}
 \item The parallel performance is not optimal, why?
 \item Can you do it using Stan's \texttt{map\_rect}?
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org9a5e265}]{Reference}
+\begin{frame}[label={sec:org3928b26}]{Reference}
 \bibliography{ttpn2}
 \bibliographystyle{plain}
 \end{frame}
 
-\begin{frame}[label={sec:orge43443b}]{Reference}
+\begin{frame}[label={sec:org940cb35}]{Reference}
 \bibliography{./ref}
 \bibliographystyle{apalike}
 \end{frame}

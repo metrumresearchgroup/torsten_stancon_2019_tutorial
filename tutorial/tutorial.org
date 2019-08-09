@@ -4,6 +4,7 @@
 
 #+INCLUDE: "./0-welcome.org"
 #+INCLUDE: "./1-Introduction.org"
+#+INCLUDE: "./2-Pharmacometric_models.org"
 #+INCLUDE: "./3-ODEs-2.org"
 #+INCLUDE: "./5-ODE_MPI.org"
 #+INCLUDE: "./6-pmx_pop_solver.org"
