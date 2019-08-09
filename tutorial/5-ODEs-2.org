@@ -1,6 +1,6 @@
 #+startup: beamer
 
-* Numerical ODE integrators @@latex:\\ \footnotesize{Yi Zhang}@@
+* Numerical ODE integrators @@latex:| \footnotesize{Yi Zhang}@@
 
 ** Nonlinear ODEs without analytical solution
 *** kinetics of an autocatalytic reaction cite:robertson_numerical_1966
@@ -124,8 +124,5 @@ How to build & run?
 ./chem sample adapt delta=0.95 random seed=1104508041 data file=chem.data.R init=chem.init.R
 #+END_SRC
 
-** Reference
-bibliographystyle:plain
-\bibliography{./ref}
 
 

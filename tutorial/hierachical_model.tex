@@ -1,0 +1,39 @@
+\documentclass{standalone}% For the example only, any class will do
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}% To get more advances positioning options
+\usetikzlibrary{arrows}% To get more arrow heads
+
+\begin{document}
+\beginpgfgraphicnamed{survey-f1}
+    \begin{tikzpicture}
+    [
+      Empty/.style={rectangle, draw=white!, fill=green!0, thick, minimum size=1mm},
+      Gray/.style={rectangle, draw=black!, fill=gray!35, thick, minimum size=1mm},
+      Round/.style={circle, draw=black!, fill=green!0, thick, minimum size=10mm},
+    ]
+    
+    % Nodes
+    \node[Empty] (theta) at (0, 0) {$\theta_\mathrm{pop}$};
+    \node[Empty] (beta1) at (-3, -2) {$\theta_1$};
+    \node[Empty] (beta2) at (-1, -2) {$\theta_2$};
+    \node[Empty] (. . .) at (1, -2) {. . .};
+    \node[Empty] (betaL) at (3, -2) {$\theta_L$};
+    
+    \node[Empty] (y1) at (-2.5, -4) {$y^2_1$};
+    \node[Empty] (y2) at (-1.5, -4) {$y^2_2$};
+    \node[Empty] (y. . .) at (-0.5, -4) {. . . };
+    \node[Empty] (yN) at (0.5, -4) {$y^2_{n_2}$};
+    
+    % Lines
+      \path [->, draw] (theta) -- (beta1);
+      \path [->, draw] (theta) -- (beta2);
+      \path [->, draw] (theta) -- (betaL);
+      
+      \path[->, draw] (beta2) -- (y1);
+      \path[->, draw] (beta2) -- (y2);
+      \path[->, draw] (beta2) -- (yN);
+
+  \end{tikzpicture}
+\endpgfgraphicnamed
+\end{document}

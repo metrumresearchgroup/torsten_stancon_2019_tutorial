@@ -1,12 +1,12 @@
 #+startup: beamer
 
-* Ordinary differential equations in Stan and Torsten @@latex:\\ \footnotesize{Yi Zhang}@@
+* ODEs in Stan and Torsten @@latex:| \footnotesize{Charles Margossian}@@
 ** Arsenal of tools
-#+begin_latex
+#+begin_src latex
   \begin{center}
     \includegraphics[width=4.5in]{odeSolvers.png}
   \end{center}
-#+end_latex
+#+end_src
 For some examples, see \cite{Margossian:2017}.
 *** 
   - the "optimized - applicable" spectrum is a heuristic; counter-examples can be built.
@@ -69,4 +69,4 @@ For some examples, see \cite{Margossian:2017}.
 #+END_SRC
 /\textcolor{MRGGreen}{Exercise 3}: Write, fit, and diagnose the two compartment model using the =pmx_solve_rk45= function./
 
-** Reference
+

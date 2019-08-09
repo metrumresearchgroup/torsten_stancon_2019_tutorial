@@ -1,6 +1,6 @@
 #+startup: beamer
 
-* Introduction and modeling framework @@latex:\\ \small{Charles Margossian}@@
+* Introduction and modeling framework @@latex:| \footnotesize{Charles Margossian}@@
 
 ** Preliminary question
    - Why Bayesian in a field such as pharmacometrics?
@@ -8,34 +8,10 @@
 
 ** Modeling framework
 *** Box's loop
-#+begin_latex :file box_loop.pdf :packages '(("" "tikz")) :border 1em :results raw
-    \begin{figure}[htbp]
-      \begin{center}
-        \begin{tikzpicture}
-          [
-          Box/.style={rectangle, draw=black!, fill=green!0, thick, minimum size=10mm},
-          Gray/.style={rectangle, draw=black!, fill=gray!35, thick, minimum size=1mm},
-          Round/.style={circle, draw=black!, fill=green!0, thick, minimum size=1mm},
-          ]
-          % Nodes
-          \node[Round] (Data) at(0, 1.5) {Data};
-          \node[Box] (Model) at(-3, 0) {Model};
-          \node[Box] (Infer) at(0, 0) {Infer};
-          \node[Box] (Crit) at (3, 0) {Criticize};
-
-          % Lines
-          \path [->, draw, thick] (Model) -- (Infer);
-          \path [->, draw, thick] (Infer) -- (Crit);
-          \path [->, draw, thick] (Crit) edge[bend left] (Model);
-          \path [->, draw, thick] (Data) -- (Infer);
-
-          % 
-
-        \end{tikzpicture}
-      \end{center}
-    \end{figure}
-#+end_latex
 #+label: fig:box_loop
+#+attr_latex: :width 0.7\columnwidth
+[[./figures/box_loop.pdf]]
+
 
 ** Inference
    - find the set of parameters consistent with our model and our data
@@ -62,7 +38,4 @@
     \beta \sim & \mathrm{Normal}(2, 1) \\
     \sigma^2 \sim & \mathrm{Normal}(1, 1)
   \end{align*}
-
-
-** Reference
 

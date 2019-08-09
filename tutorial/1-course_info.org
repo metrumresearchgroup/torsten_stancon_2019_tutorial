@@ -22,7 +22,7 @@
     + Group/Population solvers and MPI parallelisation
 ** Logistics
   METWORX\texttrademark{}, cloud-based modeling & simulation platform by Metrum Research Group.
-#+begin_latex
+#+begin_src latex
   \begin{center}
     \includegraphics[width=3cm]{metworx}
   \end{center}
@@ -42,7 +42,7 @@
       \includegraphics[width=0.9\textwidth]{metworx_decisionmakingtools}
     \end{minipage}
   \end{figure}
-#+end_latex
+#+end_src
 
 ** Logistics
   Workshop package

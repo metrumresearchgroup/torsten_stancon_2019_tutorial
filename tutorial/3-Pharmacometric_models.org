@@ -1,16 +1,16 @@
 #+startup: beamer
 
-* Models in pharmacometrics @@latex:\\ \small{Charles Margossian}@@
+* Models in pharmacometrics @@latex:| \footnotesize{Charles Margossian}@@
 **  What is the effect of a treatment on a patient?
   - /pharmacokinetics (PK)/: how is the drug absorbed in the body?
   - /pharmacodynamics (PD)/: once it is absorbed, what are its effects? 
  
 ** Example: Two compartment model
-#+begin_latex
+#+begin_src latex
   \begin{center}
     \includegraphics[width=4in]{TwoCptNice.png}
   \end{center}
-#+end_latex
+#+end_src
 
 ** Two compartment model
 \begin{align*}
@@ -21,11 +21,11 @@
 \end{align*}
 
 ** Example 2: Bone mineral density model from \cite{Peterson:2012}
-#+begin_latex
+#+begin_src latex
   \begin{center}
     \includegraphics[width = 3in]{RiggsBoneModel.jpg}
   \end{center}
-#+end_latex
+#+end_src
 
 ** Two compartment model
 Denote $\theta = \{CL, Q, VC, VP, K_a \}$, the ODE coefficients.
@@ -41,11 +41,11 @@ the \textcolor{MRGGreen}{\textit{natural evolution}} of the system at any given 
   - \textcolor{MRGGreen}{Observation}: a measurement of a quantity of interest at a certain time.
 
 ** Drug concentration in a patient's blood
-#+begin_latex
+#+begin_src latex
   \begin{center}
     \includegraphics[width=3.5in]{multiple_doses.png}
   \end{center}
-#+end_latex
+#+end_src
 
 ** The event schedule
  - There is no general theory for the event schedule :(
@@ -53,11 +53,11 @@ the \textcolor{MRGGreen}{\textit{natural evolution}} of the system at any given 
 
 **  Torsten functions
 Torsten functions offers additional built-in functions to simulate data from a compartment model.
-#+begin_latex  
+#+begin_src latex  
   \begin{center}
     \includegraphics[width=1.5in]{torstenLogo.png}
   \end{center}
-#+end_latex
+#+end_src
   
   Each Torsten function requires users to specify:
   - a system of ODEs and a method to solve it.

@@ -1,6 +1,6 @@
 #+startup: beamer
 
-* ODE group integrators @@latex:\\ \footnotesize{Yi Zhang}@@
+* ODE group integrators @@latex:| \footnotesize{Yi Zhang}@@
 
 ** ODE group integrators
    :PROPERTIES:

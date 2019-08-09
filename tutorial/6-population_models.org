@@ -1,0 +1,148 @@
+#+startup: beamer
+
+* Population models @@latex:| \footnotesize{Charles Margossian}@@
+** Data pooled into groups
+   - sport measurements are grouped by players
+   - people's voting intention can be grouped by states, social status, etc.
+   - medical measurements are grouped by patients
+
+** Data pooled into groups
+   - medical measurements are grouped by patients
+     + Simulated with =mrgsolve= [[https://mrgsolve.github.io/]]
+#+BEGIN_SRC latex
+  \begin{figure}
+    \includegraphics[width = 7.5cm]{Dosing_regimes.png}
+  \end{figure}
+#+END_SRC
+
+** Hierarchical model
+With a hierarchical model, we can
+ - do partial pooling.
+ - estimate how similar the groups are to one another.
+ - estimate individual parameters.
+  $$\theta = (\theta_1, ..., \theta_L) \sim p(\theta | \theta_\mathrm{pop}) $$
+  $$y = (y_1, ..., y_N) \sim p(y | \theta, x) $$
+** Hierarchical model
+  $$\theta = (\theta_1, ..., \theta_L) \sim p(\theta | \theta_\mathrm{pop}) $$
+  $$y = (y_1, ..., y_N) \sim p(y | \theta, x) $$
+#+attr_latex: :width 0.6\textwidth
+[[./figures/hierachical_model.pdf]]
+
+** Example 3: Hierarchical two compartment model
+  Likelihood function:
+  \begin{align*}
+    &\log \theta \sim \mathrm{Normal}(\log \theta_\mathrm{pop}, \Omega) \\ \\
+    &\Omega = \left(\begin{array}{ccccc} 
+                            \omega_1 & 0 & 0 & 0 & 0 \\
+                            0 & \omega_2 & 0 & 0 & 0 \\
+                            0 & 0 & \omega_3 & 0 & 0 \\
+                            0 & 0 & 0 & \omega_4 & 0 \\
+                            0 & 0 & 0 & 0 & \omega_5
+                            \end{array} \right) \\ \\ \\
+    &\log (cObs) \sim \mathrm{Normal}\left(\log \left(\frac{y_2}{VC} \right), \sigma^2 \right)
+  \end{align*}
+
+**  Exercise 6: Write, fit, and diagnose a hierarchical two
+     compartment model for a population of 10 patients.
+     Use \texttt{data/twoCptPop.data.r} and \texttt{twoCptPop.r}.}
+   - /Start by running 3 chains with 30 iterations./
+   - /Do you get any warning messages?/
+**  Divergent transitions
+  - /Do you get any warning messages?/
+   #+BEGIN_SRC bash
+   There were 29 divergent transitions after warmup.
+   #+END_SRC
+  - A divergent transition occurs when we fail to accurately compute a Hamiltonian trajectory.
+  - This is because we \textit{approximate} trajectories.
+  - Our sampler may not be refined enough to explore the entire typical set.
+
+**  Divergent transitions
+  Consider the following hierarchical model:
+
+  \begin{align*}
+    \alpha_i \sim& \mathrm{Normal}(\mu, \sigma)  \\
+    y_i \sim& p(y | \alpha_i)
+  \end{align*}
+
+**  Divergent transitons
+  $$ \alpha_i \sim \mathrm{Normal}(\mu, \sigma) $$
+  
+  Fitting this model yields the following pairs plot:
+#+BEGIN_SRC latex
+  \begin{center}
+    \includegraphics[width=5cm]{pairs_baseball2.png}
+  \end{center}
+#+END_SRC
+
+**  Divergent transitons
+#+BEGIN_SRC latex
+  \begin{center}
+    \includegraphics[width=5cm]{pairs_baseball2.png}
+  \end{center}
+#+END_SRC
+  - This geometric shape is known as Neil's funnel \cite{Neil:2003}.
+  - Its interactions with HMC is described in \cite{Betancourt:2015}.
+  - It occurs in hierarchical models when we have sparse data and
+    a centered prior.
+** Reparameterization
+*** Proposition   
+  Reparameterize the model to avoid the funnel shape.
+  We will do so by standardizing $\alpha$.
+  
+  $$ \alpha_{\mathrm{std}, i} := \frac{\alpha_i - \mu}{\sigma} $$
+  
+  Then
+  
+  $$ \alpha_\mathrm{std} \sim \mathrm{Normal}(0, 1)  $$
+** Reparameterization
+  Then
+    $$ \alpha_i = \mu + \sigma \alpha_{\mathrm{std}, i} $$
+    
+    Hence
+      $$ y_i  \sim p(\mu + \sigma \alpha_{\mathrm{std}, i}) $$
+ - Same data generating process; but how does this affect the geometry of the posterior?
+** Reparameterization
+  Our model is a little more complicated than the above example:
+  - a lot of parameters (100 +)!
+  - multiple population parameters and hierarchical structures.
+  - these parameters follow a log normal distribution (so we need a pairs plot with $\log \theta$).
+
+** Reparameterization
+#+BEGIN_SRC latex
+  \begin{center}
+    \includegraphics[width=9cm]{twoCptPairs1}
+  \end{center}
+#+END_SRC
+
+** Reparameterization
+  /\textcolor{MRGGreen}{Exercise 6}/:
+    Reparametrize the two compartment population model and fit it.}
+     - First, work out the appropriate parametrization. You should start with $\log \theta_i \sim \mathrm{Normal}(\theta_{\mathrm{pop}, i}, \omega)$
+     - Write, fit, and check the inference (run 100 chains).
+     - What kind of predictive checks can we do?
+
+** Reparameterization
+  Need:
+ - predictions at an individual level
+ - predictions at a population level
+
+  As always, this comes down to properly writing the data generating process
+  in the generated quantities block.
+** Individual predictions
+#+BEGIN_SRC latex
+  \begin{center}
+    \includegraphics[width = 10cm]{PredictionPatient.png}
+  \end{center}
+#+END_SRC
+** Population predictions
+#+BEGIN_SRC latex
+  \begin{center}
+    \includegraphics[width = 10cm]{PredictionPopulation.png}
+  \end{center}
+#+END_SRC
+
+** Further reading
+   For a very good case study on hierarchical models, see,
+   Bob Carpenter's /Pooling with Hierarchical Models for Repeated Binary Trials/
+
+   https://mc-stan.org/users/documentation/case-studies/pool-binary-trials.html

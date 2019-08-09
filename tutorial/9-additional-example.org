@@ -1,12 +1,12 @@
 #+startup: beamer
 
-* Additional nonlinear ODE example @@latex:\\ \footnotesize{Yi Zhang}@@
+* Additional nonlinear ODE example @@latex:| \footnotesize{Charles Margossian}@@
 ** Friberg-Karlsson semi-mechanistic model \cite{Friberg:2002}
-#+begin_latex
+#+begin_src latex
   \begin{center}
     \includegraphics[width=8.5cm]{Friberg-Karlsson_drug}
   \end{center}
-#+end_latex
+#+end_src
 ** ODE system of F-K model
   \begin{align*}\label{eq:FK}
   y_{\mathrm{prol}}' &= k_{\mathrm{tr}} y_{\mathrm{prol}} (1 - {\color{red}E_{\mathrm{drug}}})\left(\frac{Circ_0}
@@ -63,21 +63,21 @@
   - This exercise entails a few subtleties; in the interest of time we won't go through it in class.
   - Here are however results I get from 3 chains with 500 iterations you can use as a benchmark.
 ** Exercise
-#+begin_latex
+#+begin_src latex
   \begin{center}
     \includegraphics[width=7cm]{FKModelPlots002.pdf}
   \end{center}
-#+end_latex
+#+end_src
 ** Exercise
-#+begin_latex
+#+begin_src latex
   \begin{center}
     \includegraphics[width=7cm]{FKPairs}
   \end{center}
-#+end_latex
+#+end_src
 ** Exercise
-#+begin_latex
+#+begin_src latex
   \begin{center}
     \includegraphics[width=7cm]{FKModelPlots006.pdf}
   \end{center}
-#+end_latex
-** References
+#+end_src
+

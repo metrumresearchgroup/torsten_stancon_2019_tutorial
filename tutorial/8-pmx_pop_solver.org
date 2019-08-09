@@ -1,6 +1,6 @@
 #+startup: beamer
 
-* PMX population solvers @@latex:\\ \footnotesize{Yi Zhang}@@
+* PMX population solvers @@latex:| \footnotesize{Yi Zhang}@@
 
 ** PMX population solvers
    :PROPERTIES:
@@ -75,7 +75,7 @@
     :BEAMER_env: block
     :END:
 #+attr_latex: :width 0.9\columnwidth
-    [[../../examples/ttpn2/lu2017Model.pdf]]
+[[./figures/lu2017Model.pdf]]
 ***  Note                                                     :BMCOL:B_block:
     :PROPERTIES:
     :BEAMER_col: 0.7
@@ -83,8 +83,7 @@
     :END:
   - To keep things simpler, we use the simulated individual CL and V values, and only model PD part of the problem.
   - PN hazard is substantially delayed relative to PK exposure.
-  - Hazard increases over time to an extent not completely described by PK.
-
+  - Hazard increases over time to an extent not completely described by P
 ** Exercise
 Likelihood for time to first PN $\ge$ 2 event in the $i^{th}$ patient:
   \begin{align*}
@@ -160,6 +159,3 @@ mpiexec -n 4 -l ttpn2_group sample num_warmup=500 num_samples=500 data file=ttpn
 - The parallel performance is not optimal, why?
 - Can you do it using Stan's =map_rect=? 
 
-** Reference
-\bibliography{ttpn2}
-bibliographystyle:plain

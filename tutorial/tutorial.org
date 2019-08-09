@@ -2,15 +2,17 @@
 #+TITLE: Population and ODE-based models @@latex:\\@@ using Stan and Torsten
 #+AUTHOR: Charles Margossian, Yi Zhang
 
-#+INCLUDE: "./0-welcome.org"
-#+INCLUDE: "./1-Introduction.org"
-#+INCLUDE: "./2-Pharmacometric_models.org"
-#+INCLUDE: "./3-ODEs.org"
-#+INCLUDE: "./3-ODEs-2.org"
-#+INCLUDE: "./5-ODE_MPI.org"
-#+INCLUDE: "./6-pmx_pop_solver.org"
+#+INCLUDE: "./1-course_info.org"
+#+INCLUDE: "./2-Introduction.org"
+#+INCLUDE: "./3-Pharmacometric_models.org"
+#+INCLUDE: "./4-ODEs.org"
+#+INCLUDE: "./5-ODEs-2.org"
+#+INCLUDE: "./6-population_models.org"
+#+INCLUDE: "./7-ODE_MPI.org"
+#+INCLUDE: "./8-pmx_pop_solver.org"
 #+INCLUDE: "./9-additional-example.org"
 
 ** Reference
-\bibliography{./ref}
 bibliographystyle:apalike
+\footnotesize \bibliography{./ref}
+
