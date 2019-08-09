@@ -61,6 +61,6 @@ model {
   for (i in 1:nsub) {
     y0_1[i] ~ lognormal(y0_mu, 0.5);    
   }
-  sigma ~ cauchy(0, 1); 
+  sigma ~ cauchy(0, 0.5); 
   obs ~ lognormal(log(x3), sigma);
 }
