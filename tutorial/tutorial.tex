@@ -1,4 +1,4 @@
-% Created 2019-08-09 Fri 20:54
+% Created 2019-08-09 Fri 21:25
 % Intended LaTeX compiler: pdflatex
 \documentclass[presentation, allowframebreaks]{beamer}
 \usepackage[utf8]{inputenc}
@@ -45,8 +45,8 @@
 
 
 \section{Course information}
-\label{sec:org01e477a}
-\begin{frame}[label={sec:org031dc1a}]{}
+\label{sec:orge75ebe8}
+\begin{frame}[label={sec:org9a97511}]{}
 \begin{block}{Instructors}
 \begin{itemize}
 \item Charles Margossian
@@ -68,7 +68,7 @@
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org747bc36}]{Outline}
+\begin{frame}[label={sec:org08f9411}]{Outline}
 \begin{block}{Day 1}
 \begin{itemize}
 \item Introduction and modeling framework
@@ -85,7 +85,7 @@
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org9fe25c1}]{Logistics}
+\begin{frame}[label={sec:org642d47c}]{Logistics}
 METWORX\texttrademark{}, cloud-based modeling \& simulation platform by Metrum Research Group.
 \begin{center}
   \includegraphics[width=3cm]{metworx}
@@ -108,7 +108,7 @@ METWORX\texttrademark{}, cloud-based modeling \& simulation platform by Metrum R
 \end{figure}
 \end{frame}
 
-\begin{frame}[label={sec:org9c0f77b}]{Logistics}
+\begin{frame}[label={sec:org968181e}]{Logistics}
 Workshop package
 \begin{itemize}
 \item R scripts and Stan files to do the exercises
@@ -126,52 +126,52 @@ We will be using:
 \end{frame}
 
 \section{Introduction and modeling framework | \footnotesize{Charles Margossian}}
-\label{sec:org3c8ba62}
+\label{sec:org683d0bc}
 
-\begin{frame}[label={sec:orge1f3096}]{Preliminary question}
+\begin{frame}[label={sec:org13169d7}]{Preliminary question}
 \begin{itemize}
 \item Why Bayesian in a field such as pharmacometrics?
 \item Example - \emph{Bayesian aggregation of average data: an application in drug development} \cite{Weber:2018}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org0304f62}]{Modeling framework}
+\begin{frame}[label={sec:org3294b82}]{Modeling framework}
 \begin{block}{Box's loop}
 \begin{center}
 \includegraphics[width=0.7\columnwidth]{./figures/box_loop.pdf}
-\label{org95a8c45}
+\label{orgc22193f}
 \end{center}
 \end{block}
 \end{frame}
 
 
-\begin{frame}[label={sec:org07dde16}]{Inference}
+\begin{frame}[label={sec:orgafceb09}]{Inference}
 \begin{itemize}
 \item find the set of parameters consistent with our model and our data
 \item approximate this set with draws from the posterior distribution
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgaf136c9}]{Sampling algorithm}
+\begin{frame}[label={sec:org659f024}]{Sampling algorithm}
 \begin{itemize}
 \item Use the NUTS to sample \(\pi (\theta | y)\)
 \item Requires users the specify \(\log \pi(\theta, y) = \log \pi(y | \theta) + \log \pi(\theta)\)
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org790b4f0}]{The "criticism" step}
+\begin{frame}[label={sec:orge3c8b8b}]{The "criticism" step}
 This step can be broken up in two parts:
 \begin{enumerate}
 \item did we sample from the correct distribution?
 \item does our model capture the characteristics of the data we care about?
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:org017490b}]{Diagnosing the inference algorithm}
+\begin{frame}[label={sec:orgf6adaf4}]{Diagnosing the inference algorithm}
 \begin{itemize}
 \item look at the trace and the density plots
 \item look at \(\hat R\) and effective number of samples
 \item have any warning messages been issued, i.e. divergent transitions ?
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org705aed7}]{Example: fitting a linear model}
+\begin{frame}[label={sec:orgb39f7f5}]{Example: fitting a linear model}
 Likelihood:
 \begin{align*}
   Y \sim \mathrm{Normal}(x \beta, \sigma^2)
@@ -185,21 +185,21 @@ Prior:
 \end{frame}
 
 \section{Models in pharmacometrics | \footnotesize{Charles Margossian}}
-\label{sec:org4fea8bb}
-\begin{frame}[label={sec:orgd80c375}]{What is the effect of a treatment on a patient?}
+\label{sec:org62126be}
+\begin{frame}[label={sec:org9b9ea6d}]{What is the effect of a treatment on a patient?}
 \begin{itemize}
 \item \emph{pharmacokinetics (PK)}: how is the drug absorbed in the body?
 \item \emph{pharmacodynamics (PD)}: once it is absorbed, what are its effects?
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org09e2212}]{Example: Two compartment model}
+\begin{frame}[label={sec:org0b519da}]{Example: Two compartment model}
 \begin{center}
   \includegraphics[width=4in]{TwoCptNice.png}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:org3c6b5af}]{Two compartment model}
+\begin{frame}[label={sec:org5260673}]{Two compartment model}
 \begin{align*}
    y_\mathrm{gut}' &= -k_a y_\mathrm{gut} \\
    y_\mathrm{cent}' &= k_a y_\mathrm{gut} - \left(\frac{CL}{V_\mathrm{cent}} + \frac{Q}{V_\mathrm{cent}} \right) y_\mathrm{cent} +  \frac{Q}{V_\mathrm{peri}} y_\mathrm{peri} \\
@@ -208,13 +208,13 @@ Prior:
 \end{align*}
 \end{frame}
 
-\begin{frame}[label={sec:org2a1fb57}]{Example 2: Bone mineral density model from \cite{Peterson:2012}}
+\begin{frame}[label={sec:org8d28610}]{Example 2: Bone mineral density model from \cite{Peterson:2012}}
 \begin{center}
   \includegraphics[width = 3in]{RiggsBoneModel.jpg}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:orgcb9b2d1}]{Two compartment model}
+\begin{frame}[label={sec:org752420c}]{Two compartment model}
 Denote \(\theta = \{CL, Q, VC, VP, K_a \}\), the ODE coefficients.
 Then
 $$ y' = f(y, t, \theta) $$
@@ -223,7 +223,7 @@ Given an initial condition \(y_0 = y(t_0)\), solving the above ODE gives us
 the \textcolor{MRGGreen}\{\textit{natural evolution}\} of the system at any given time point.
 \end{frame}
 
-\begin{frame}[label={sec:org746250f}]{The event schedule}
+\begin{frame}[label={sec:orgc747b2d}]{The event schedule}
 An event can be:
 \begin{itemize}
 \item \textcolor{MRGGreen}{Sate changer}: an (exterior) intervention that alters the state of the system; for example a bolus dosing or the beginning of an infusion.
@@ -231,20 +231,20 @@ An event can be:
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org0bf084f}]{Drug concentration in a patient's blood}
+\begin{frame}[label={sec:org779b6be}]{Drug concentration in a patient's blood}
 \begin{center}
   \includegraphics[width=3.5in]{multiple_doses.png}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:org3e591a4}]{The event schedule}
+\begin{frame}[label={sec:orgd357832}]{The event schedule}
 \begin{itemize}
 \item There is no general theory for the event schedule :(
 \item The modeling software NONMEM\textregistered proposes a convention for pharmacometrics, which we adopt in Torsten.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org8d36dcc}]{Torsten functions}
+\begin{frame}[label={sec:orgb6b72fe}]{Torsten functions}
 Torsten functions offers additional built-in functions to simulate data from a compartment model.
 \begin{center}
   \includegraphics[width=1.5in]{torstenLogo.png}
@@ -256,7 +256,7 @@ Each Torsten function requires users to specify:
 \item An event schedule.
 \end{itemize}
 \end{frame}
-\begin{frame}[fragile,label={sec:org0b74d32}]{Torsten functions}
+\begin{frame}[fragile,label={sec:orga4bc910}]{Torsten functions}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 matrix = pmx_solve_onecpt(real[] time, real[] amt, real[] rate,
                                real[] ii, int[] evid, int[] cmt,
@@ -276,7 +276,7 @@ matrix = pmx_solve_twocpt(real[] time, real[] amt, real[] rate,
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:orgcdc07d5}]{Example}
+\begin{frame}[label={sec:orgbdd1f6a}]{Example}
 \begin{block}{Clinical trial}
 \begin{itemize}
 \item Single patient
@@ -291,7 +291,7 @@ matrix = pmx_solve_twocpt(real[] time, real[] amt, real[] rate,
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orgc74a91f}]{Example}
+\begin{frame}[label={sec:orga14030d}]{Example}
 \begin{block}{Model}
 \begin{itemize}
 \item two compartment model with first-order absorption
@@ -300,7 +300,7 @@ matrix = pmx_solve_twocpt(real[] time, real[] amt, real[] rate,
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[fragile,label={sec:orgb1f1f1c}]{Example}
+\begin{frame}[fragile,label={sec:org3856eff}]{Example}
  \begin{block}{Prior}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 CL ~ lognormal(log(10), 0.25);
@@ -321,7 +321,7 @@ sigma ~ cauchy(0, 1);
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org86ce635}]{Resources}
+\begin{frame}[label={sec:orgc4206a6}]{Resources}
 \begin{itemize}
 \item Torsten repository: \url{https://github.com/metrumresearchgroup/Torsten}
 \item Torsten User manual (on GitHub and in the workshop folder).
@@ -329,8 +329,8 @@ sigma ~ cauchy(0, 1);
 \end{frame}
 
 \section{ODEs in Stan and Torsten | \footnotesize{Charles Margossian}}
-\label{sec:org65a59af}
-\begin{frame}[label={sec:orgeed1fb8}]{Arsenal of tools}
+\label{sec:orgc7c6be2}
+\begin{frame}[label={sec:orged99f2d}]{Arsenal of tools}
 \begin{center}
   \includegraphics[width=4.5in]{odeSolvers.png}
 \end{center}
@@ -343,7 +343,7 @@ For some examples, see \cite{Margossian:2017}.
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org5c0e3ac}]{Matrix exponential}
+\begin{frame}[label={sec:orgaeb2c7f}]{Matrix exponential}
 Consider a system of linear ODEs:
 $$ y^\prime(t) = Ky(t) $$
 where \(K\) is a constant matrix.
@@ -351,10 +351,10 @@ where \(K\) is a constant matrix.
 Then
 $$ y(t) = e^{tK} y_0 $$
 \end{frame}
-\begin{frame}[label={sec:orgf24b24b}]{Matrix Exponential}
+\begin{frame}[label={sec:orgaa41c12}]{Matrix Exponential}
 $$ e^{tK} = \sum_{n=0}^{\infty} \dfrac{(tK)^n}{n!} = I + tK + \frac{(tK)^2}{2} + \frac{(tK)^3}{3!} + ... $$
 \end{frame}
-\begin{frame}[label={sec:org6625787}]{Matrix Exponential}
+\begin{frame}[label={sec:org5eb6aaa}]{Matrix Exponential}
 For example, the two compartment model generates the following matrix:
 \[ K = \begin{bmatrix}
        -ka & 0 & 0 \\
@@ -363,7 +363,7 @@ For example, the two compartment model generates the following matrix:
      \end{bmatrix}
   \]
 \end{frame}
-\begin{frame}[fragile,label={sec:org78e591a}]{Linear ODE solver in Torsten}
+\begin{frame}[fragile,label={sec:org65fcdd9}]{Linear ODE solver in Torsten}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 matrix = pmx_solve_linode(real[] time, real[] amt, real[] rate,
                      real[] ii, int[] evid, int[] cmt,
@@ -371,7 +371,7 @@ matrix = pmx_solve_linode(real[] time, real[] amt, real[] rate,
                      matrix K, real[] biovar, real[] tlag)
 \end{minted}
 \end{frame}
-\begin{frame}[fragile,label={sec:org6bdaca8}]{Numerical integrator}
+\begin{frame}[fragile,label={sec:org259582c}]{Numerical integrator}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 real[ , ] pmx_integrate_ode_rk45(ODE_RHS, real[] y0, real t0, real[] ts, real[] theta, real[] x_r, int[] x_i, real rtol = 1.e-6, real atol = 1.e-6, int max_step = 1e6);
 \end{minted}
@@ -387,7 +387,7 @@ real[ , ] pmx_integrate_ode_rk45(ODE_RHS, real[] y0, real t0, real[] ts, real[] 
 parameters for \emph{relative tolerance}, \emph{absolute tolerance}, and \emph{max number of time steps}, respectively. Their default values have no theoretical justification.
 \end{itemize}
 \end{frame}
-\begin{frame}[fragile,label={sec:org28ed1ae}]{System function}
+\begin{frame}[fragile,label={sec:org7b1c86b}]{System function}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 functions {
   real[] system(real time, real[] y, 
@@ -403,7 +403,7 @@ functions {
 }
 \end{minted}
 \end{frame}
-\begin{frame}[fragile,label={sec:org101ff93}]{Torsten function}
+\begin{frame}[fragile,label={sec:org976a751}]{Torsten function}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 matrix pmx_solve_rk45(ODE_system, int nCmt, real[] time, real[] amt, real[] rate, real[] ii, int[] evid, int[] cmt, real[] addl, int[] ss, real[] theta, real[] biovar, real[] tlag, real rel_tol, real abs_tol, int max_step);
 \end{minted}
@@ -411,9 +411,9 @@ matrix pmx_solve_rk45(ODE_system, int nCmt, real[] time, real[] amt, real[] rate
 \end{frame}
 
 \section{Numerical ODE integrators | \footnotesize{Yi Zhang}}
-\label{sec:orgcd8fdf4}
-\label{org575bd5d}
-\begin{frame}[label={sec:org028bc6a}]{Nonlinear ODEs without analytical solution}
+\label{sec:org1eef964}
+\label{org920b505}
+\begin{frame}[label={sec:org49c2693}]{Nonlinear ODEs without analytical solution}
 \begin{block}{kinetics of an autocatalytic reaction \cite{robertson_numerical_1966}}
 The structure of the reactions is 
 \begin{equation*}
@@ -433,7 +433,7 @@ Given \(k_1=0.04, k_2=3.0e7, k_3=1.0e4\), we make inference
 regarding the initial condition for \(x_1(t=0)\).
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgc85afde}]{Nonlinear ODEs without analytical solution}
+\begin{frame}[label={sec:orgffbcce3}]{Nonlinear ODEs without analytical solution}
 \begin{align*}
 x_1' &= -k_1x_1 + k_3x_2x_3\\
 x_2' &=  k_1x_1 - k_2x_2^2 - k_3x_2x_3\\
@@ -441,12 +441,12 @@ x_3' &=  k_2x_2^2
 \end{align*}
 Given \(k_1=0.04, k_2=3.0e7, k_3=1.0e4\), we make inference
 regarding the initial condition for \(x_1(t=0)\).
-\begin{block}{Exercise}
+\begin{block}{Exercise 4}
 Write Stan function for the above ODE's RHS.
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orge464941}]{Stan function for autocatalytic kinetics}
+\begin{frame}[fragile,label={sec:orgc673f4f}]{Stan function for autocatalytic kinetics}
  \begin{align*}
 x_1' &= -k_1x_1 + k_3x_2x_3\\
 x_2' &=  k_1x_1 - k_2x_2^2 - k_3x_2x_3\\
@@ -472,7 +472,7 @@ functions{
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org84f9f5f}]{Numerical integrators}
+\begin{frame}[fragile,label={sec:orgbedfbcd}]{Numerical integrators}
  \begin{itemize}
 \item Runge-Kutta 4th/5th (\texttt{rk45})
 \begin{itemize}
@@ -493,7 +493,7 @@ functions{
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgb896000}]{Numerical integrators}
+\begin{frame}[fragile,label={sec:orgacb1aef}]{Numerical integrators}
  \begin{center}
 \begin{tabular}{lll}
 Integrators & Stan & Torsten\\
@@ -520,7 +520,7 @@ real[ , ] pmx_integrate_ode_rk45(ODE_RHS, real[] y0, real t0, real[] ts, real[] 
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:orgede97b9}]{Exercise}
+\begin{frame}[fragile,label={sec:org9bfa959}]{Model}
  \begin{itemize}
 \item In each of 8 experiments performed \(x3\) is observed.
 \item Hierarchical model for \(x0[1]\)
@@ -537,7 +537,7 @@ model {
 \end{minted}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgdb175ac}]{Exercise}
+\begin{frame}[fragile,label={sec:orgf639330}]{Data}
  \begin{block}{Data available for the inference}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 data {
@@ -551,7 +551,7 @@ data {
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgd48bd03}]{Exercise}
+\begin{frame}[fragile,label={sec:orgc613ea2}]{Exercise 5}
  \begin{block}{Given above data and model, write the rest of Stan code.}
 \begin{itemize}
 \item Hint: use \texttt{chem.stan} as template, also see \texttt{chem.data.R} and \texttt{chem.init.R}.
@@ -563,7 +563,7 @@ non-existent at the beginning of the reaction.
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgc8485d8}]{Exercise}
+\begin{frame}[fragile,label={sec:org94f9094}]{Exercise 5}
  How to build \& run?
 \begin{block}{Edit/Add \texttt{cmdstan/make/local}}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
@@ -584,8 +584,8 @@ make path_to_workshop/RScript/model/chemical_reactions/chem
 \end{frame}
 
 \section{Population models | \footnotesize{Charles Margossian}}
-\label{sec:org334c8df}
-\begin{frame}[label={sec:orgd959fd0}]{Data pooled into groups}
+\label{sec:org99fe7e6}
+\begin{frame}[label={sec:org5fd7dca}]{Data pooled into groups}
 \begin{itemize}
 \item sport measurements are grouped by players
 \item people's voting intention can be grouped by states, social status, etc.
@@ -593,7 +593,7 @@ make path_to_workshop/RScript/model/chemical_reactions/chem
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org6ee13bf}]{Data pooled into groups}
+\begin{frame}[fragile,label={sec:org711314f}]{Data pooled into groups}
  \begin{itemize}
 \item medical measurements are grouped by patients
 \begin{itemize}
@@ -605,7 +605,7 @@ make path_to_workshop/RScript/model/chemical_reactions/chem
 \end{figure}
 \end{frame}
 
-\begin{frame}[label={sec:orgadb6c69}]{Hierarchical model}
+\begin{frame}[label={sec:org2266f23}]{Hierarchical model}
 With a hierarchical model, we can
 \begin{itemize}
 \item do partial pooling.
@@ -615,7 +615,7 @@ $$\theta = (\theta_1, ..., \theta_L) \sim p(\theta | \theta_\mathrm{pop}) $$
 $$y = (y_1, ..., y_N) \sim p(y | \theta, x) $$
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org430cc9a}]{Hierarchical model}
+\begin{frame}[label={sec:org2b94e72}]{Hierarchical model}
 $$\theta = (\theta_1, ..., \theta_L) \sim p(\theta | \theta_\mathrm{pop}) $$
 $$y = (y_1, ..., y_N) \sim p(y | \theta, x) $$
 \begin{center}
@@ -623,7 +623,7 @@ $$y = (y_1, ..., y_N) \sim p(y | \theta, x) $$
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:org99fd2d8}]{Example 3: Hierarchical two compartment model}
+\begin{frame}[label={sec:org79f8f64}]{Example 3: Hierarchical two compartment model}
 Likelihood function:
 \begin{align*}
   &\log \theta \sim \mathrm{Normal}(\log \theta_\mathrm{pop}, \Omega) \\ \\
@@ -638,7 +638,7 @@ Likelihood function:
 \end{align*}
 \end{frame}
 
-\begin{frame}[label={sec:org7b63857}]{Exercise 6: Write, fit, and diagnose a hierarchical two}
+\begin{frame}[label={sec:org0bce690}]{Exercise 6: Write, fit, and diagnose a hierarchical two}
 compartment model for a population of 10 patients.
 Use \texttt{data/twoCptPop.data.r} and \texttt{twoCptPop.r}.\}
 \begin{itemize}
@@ -646,7 +646,7 @@ Use \texttt{data/twoCptPop.data.r} and \texttt{twoCptPop.r}.\}
 \item \emph{Do you get any warning messages?}
 \end{itemize}
 \end{frame}
-\begin{frame}[fragile,label={sec:org6561f81}]{Divergent transitions}
+\begin{frame}[fragile,label={sec:orgb1ff125}]{Divergent transitions}
  \begin{itemize}
 \item \emph{Do you get any warning messages?}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{bash}
@@ -658,7 +658,7 @@ There were 29 divergent transitions after warmup.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:orgc54a16f}]{Divergent transitions}
+\begin{frame}[label={sec:orgeb1419b}]{Divergent transitions}
 Consider the following hierarchical model:
 
 \begin{align*}
@@ -667,7 +667,7 @@ Consider the following hierarchical model:
 \end{align*}
 \end{frame}
 
-\begin{frame}[label={sec:org190b7a4}]{Divergent transitons}
+\begin{frame}[label={sec:org36bbbb1}]{Divergent transitons}
 $$ \alpha_i \sim \mathrm{Normal}(\mu, \sigma) $$
 
 Fitting this model yields the following pairs plot:
@@ -676,7 +676,7 @@ Fitting this model yields the following pairs plot:
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:org356a25d}]{Divergent transitons}
+\begin{frame}[label={sec:orgf9973ed}]{Divergent transitons}
 \begin{center}
   \includegraphics[width=5cm]{pairs_baseball2.png}
 \end{center}
@@ -688,7 +688,7 @@ Fitting this model yields the following pairs plot:
 a centered prior.
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org80a3795}]{Reparameterization}
+\begin{frame}[label={sec:orgdcb5cbf}]{Reparameterization}
 \begin{block}{Proposition}
 Reparameterize the model to avoid the funnel shape.
 We will do so by standardizing \(\alpha\).
@@ -700,7 +700,7 @@ Then
 $$ \alpha_\mathrm{std} \sim \mathrm{Normal}(0, 1)  $$
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org86e27ec}]{Reparameterization}
+\begin{frame}[label={sec:org21e4d68}]{Reparameterization}
 Then
   $$ \alpha_i = \mu + \sigma \alpha_{\mathrm{std}, i} $$
 
@@ -710,7 +710,7 @@ Hence
 \item Same data generating process; but how does this affect the geometry of the posterior?
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org6076483}]{Reparameterization}
+\begin{frame}[label={sec:org6a34d08}]{Reparameterization}
 Our model is a little more complicated than the above example:
 \begin{itemize}
 \item a lot of parameters (100 +)!
@@ -719,13 +719,13 @@ Our model is a little more complicated than the above example:
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:orga8d9a6d}]{Reparameterization}
+\begin{frame}[label={sec:orga5806a1}]{Reparameterization}
 \begin{center}
   \includegraphics[width=9cm]{twoCptPairs1}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:org8fb01d2}]{Reparameterization}
+\begin{frame}[label={sec:orgb9d6a71}]{Reparameterization}
 \emph{\textcolor{MRGGreen}{Exercise 6}}:
   Reparametrize the two compartment population model and fit it.\}
 \begin{itemize}
@@ -735,7 +735,7 @@ Our model is a little more complicated than the above example:
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:orgff4ed46}]{Reparameterization}
+\begin{frame}[label={sec:org26379ca}]{Reparameterization}
 Need:
 \begin{itemize}
 \item predictions at an individual level
@@ -745,19 +745,19 @@ As always, this comes down to properly writing the data generating process
 in the generated quantities block.
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org751c9e4}]{Individual predictions}
+\begin{frame}[label={sec:orga0c93da}]{Individual predictions}
 \begin{center}
   \includegraphics[width = 10cm]{PredictionPatient.png}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:org1feeca5}]{Population predictions}
+\begin{frame}[label={sec:org012cb29}]{Population predictions}
 \begin{center}
   \includegraphics[width = 10cm]{PredictionPopulation.png}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:orgac335d0}]{Further reading}
+\begin{frame}[label={sec:org7b77284}]{Further reading}
 For a very good case study on hierarchical models, see,
 Bob Carpenter's \emph{Pooling with Hierarchical Models for Repeated Binary Trials}
 
@@ -765,9 +765,9 @@ Bob Carpenter's \emph{Pooling with Hierarchical Models for Repeated Binary Trial
 \end{frame}
 
 \section{ODE group integrators | \footnotesize{Yi Zhang}}
-\label{sec:org935311a}
+\label{sec:org326293f}
 
-\begin{frame}[fragile,label={sec:orgac2f64b}]{ODE group integrators}
+\begin{frame}[fragile,label={sec:orgbc05972}]{ODE group integrators}
  \begin{center}
 \begin{tabular}{ll}
 Single ODE system & ODE group\\
@@ -812,7 +812,7 @@ pmx_integrate_ode_group_xxx(
 \end{columns}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org6fc3a8b}]{ODE group integrators}
+\begin{frame}[fragile,label={sec:org0107c40}]{ODE group integrators}
  \begin{columns}
 \begin{column}{0.45\columnwidth}
 \begin{block}{Single ODE system}
@@ -855,7 +855,7 @@ column-wise. The number of rows equals to the size of ODE system.
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orgd9d2650}]{Exercise}
+\begin{frame}[label={sec:org71e1a23}]{Exercise 7}
 \begin{block}{autocatalytic reaction model: ODE group version}
 \begin{itemize}
 \item Change the loop with the numerical integrator to use group
@@ -869,7 +869,7 @@ integrator.
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org5e0bc9e}]{Exercise}
+\begin{frame}[fragile,label={sec:org947ec52}]{Exercise 7}
  \begin{block}{Build and run}
 \begin{itemize}
 \item Edit/Add \texttt{cmdstan/make/local}
@@ -893,7 +893,7 @@ mpiexec -n 2 -l ./chem_group sample adapt delta=0.95 random seed=1104508041 data
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgdf22c71}]{Exercise}
+\begin{frame}[fragile,label={sec:orgdc5fbe0}]{Exercise 7}
  \begin{itemize}
 \item What does output say?
 \item How many cores can you use until performance saturates? Why?
@@ -902,9 +902,9 @@ mpiexec -n 2 -l ./chem_group sample adapt delta=0.95 random seed=1104508041 data
 \end{frame}
 
 \section{PMX population solvers | \footnotesize{Yi Zhang}}
-\label{sec:org5b1396a}
+\label{sec:org93466e8}
 
-\begin{frame}[fragile,label={sec:org9d36bdc}]{PMX population solvers}
+\begin{frame}[fragile,label={sec:org75ab7d5}]{PMX population solvers}
  \begin{center}
 \begin{tabular}{ll}
 Single ODE system & ODE group\\
@@ -953,7 +953,7 @@ pmx_solve_group_bdf(f, int nCmt,
 \end{frame}
 
 
-\begin{frame}[fragile,label={sec:orgbb3e88e}]{PMX population solvers}
+\begin{frame}[fragile,label={sec:orgc6ad11b}]{PMX population solvers}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 matrix
 pmx_solve_group_bdf(f, int nCmt, int[] len, real[] time, real[] amt, real[] rate, real[] ii, int[] evid, int[] cmt, real[] addl, int[] ss, real[,] theta, real[,] biovar, real[,] tlag, real rel_tol, real abs_tol, int max_step);
@@ -968,7 +968,7 @@ pmx_solve_group_bdf(f, int nCmt, int[] len, real[] time, real[] amt, real[] rate
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org5d2d1f1}]{Exercise}
+\begin{frame}[label={sec:orgb7e6aba}]{Time-to-event model}
 We analyze the time to the first grade 2+ peripheral neuropathy
 (PN) event in patients treated with an antibody-drug conjugate (ADC) delivering monomethyl auristatin E
 (MMAE). We will simulate and analyze data using a simplified version of the
@@ -996,7 +996,7 @@ model reported in \cite{lu_time--event_2017}.
 \end{column}
 \end{columns}
 \end{frame}
-\begin{frame}[label={sec:org8e8bf08}]{Exercise}
+\begin{frame}[label={sec:org37bed30}]{Likelihood}
 Likelihood for time to first PN \(\ge\) 2 event in the \(i^{th}\) patient:
 \begin{align*}
 \lefteqn{L\left(\theta | t_{\text{PN},i}, \text{censor}_i, X_i\right)} \\
@@ -1025,7 +1025,7 @@ One can see the expression
 as the survival function at time \(t\).
 \end{frame}
 
-\begin{frame}[label={sec:org3c0d309}]{Exercise}
+\begin{frame}[label={sec:org8d4255a}]{ODEs}
 Hazard of PN grade 2+ based on the Weibull distribution,
 with drug effect proportional to effect site concentration of MMAE:
 \begin{align*}
@@ -1043,7 +1043,7 @@ Overall ODE system including integration of the hazard function:
 where \(x_2(t) = c_e(t)\) and \(x_3(t) = \int_0^t h(u) du\) aka cumulative hazard.
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org1fb5986}]{Exercise: write the ODE system}
+\begin{frame}[fragile,label={sec:org9c097ad}]{Exercise 8: write the ODE system}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 functions{
     real[] oneCptPNODE(real t, real[] x, real[] parms, real[] x_r, int[] x_i){
@@ -1062,7 +1062,7 @@ functions{
 \end{minted}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgbef4f37}]{Exercise: the ODE system}
+\begin{frame}[fragile,label={sec:org8091cf7}]{Exercise 8: the ODE system}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 real[] oneCptPNODE(real t, real[] x, real[] parms, real[] x_r, int[] x_i){
   real dxdt[3];
@@ -1088,7 +1088,7 @@ real[] oneCptPNODE(real t, real[] x, real[] parms, real[] x_r, int[] x_i){
 \end{minted}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgfe82de8}]{Exercise}
+\begin{frame}[fragile,label={sec:org3256d3e}]{Parameters}
  \begin{block}{parameters}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 parameters{
@@ -1112,7 +1112,7 @@ transformed parameters{
 \end{minted}
 \end{block}
 \end{frame}
-\begin{frame}[fragile,label={sec:org10e4cfa}]{Exercise}
+\begin{frame}[fragile,label={sec:orgab9dd2b}]{Parameters}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 transformed parameters{
   vector<lower = 0>[nPNObs] survObs;
@@ -1128,13 +1128,15 @@ transformed parameters{
   /* ... */
 }
 \end{minted}
-\begin{block}{Use \texttt{pmx\_solve\_group\_rk45} to solve for \texttt{x}.}
-\end{block}
-\begin{block}{Write likelihood expressions for \texttt{survObs}, \texttt{EdrugObs}, \texttt{hazardObs}, and \texttt{survCens}.}
+\begin{block}{Exercise 9}
+\begin{itemize}
+\item Use \texttt{pmx\_solve\_group\_rk45} to solve for \texttt{x}.
+\item Write likelihood expressions for \texttt{survObs}, \texttt{EdrugObs}, \texttt{hazardObs}, and \texttt{survCens}.
+\end{itemize}
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgfe7fcbf}]{Exercise}
+\begin{frame}[fragile,label={sec:org4c7a24e}]{Exercise 9}
  \begin{itemize}
 \item Stan's \texttt{target} variable and user-defined likelihood.
 \end{itemize}
@@ -1150,7 +1152,7 @@ model{
 \end{minted}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgd9ef74d}]{Exercise}
+\begin{frame}[fragile,label={sec:org0b9039b}]{Exercise 9}
  \begin{block}{Edit/Add \texttt{cmdstan/make/local}}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
 TORSTEN_MPI = 1         # flag on torsten's MPI solvers
@@ -1169,7 +1171,7 @@ mpiexec -n 4 -l ttpn2_group sample num_warmup=500 num_samples=500 data file=ttpn
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgec9123a}]{Exercise}
+\begin{frame}[fragile,label={sec:orgf252be1}]{Exercise 9}
  \begin{itemize}
 \item The parallel performance is not optimal, why?
 \item Can you do it using Stan's \texttt{map\_rect}?
@@ -1177,14 +1179,14 @@ mpiexec -n 4 -l ttpn2_group sample num_warmup=500 num_samples=500 data file=ttpn
 \end{frame}
 
 \section{Additional nonlinear ODE example | \footnotesize{Charles Margossian}}
-\label{sec:org3d61b43}
-\begin{frame}[label={sec:org2797bb9}]{Friberg-Karlsson semi-mechanistic model \cite{Friberg:2002}}
+\label{sec:org82b7e7f}
+\begin{frame}[label={sec:org441612d}]{Friberg-Karlsson semi-mechanistic model \cite{Friberg:2002}}
 \begin{center}
   \includegraphics[width=8.5cm]{Friberg-Karlsson_drug}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:org7c0c315}]{ODE system of F-K model}
+\begin{frame}[label={sec:org2eb8338}]{ODE system of F-K model}
 \begin{align*}\label{eq:FK}
 y_{\mathrm{prol}}' &= k_{\mathrm{tr}} y_{\mathrm{prol}} (1 - {\color{red}E_{\mathrm{drug}}})\left(\frac{Circ_0}
   {y_{\mathrm{circ}}}\right)^\gamma - k_{\mathrm{tr}}y_{\mathrm{prol}} \\
@@ -1203,7 +1205,7 @@ and \(\alpha \approx 3e-4\).
 \item This problem can be solved using \texttt{pmx\_solve\_*}.
 \end{itemize}
 \end{frame}
-\begin{frame}[fragile,label={sec:org63f2b1e}]{Coupled PK-PD system}
+\begin{frame}[fragile,label={sec:orgb5bf813}]{Coupled PK-PD system}
  Alternatively, we may elect to solve the PK ODEs \textcolor{MRGGreen}{analytically} 
 and the PD ODEs \textcolor{MRGGreen}{numerically}.
 \begin{itemize}
@@ -1214,7 +1216,7 @@ real[] pmx_solve_twocpt_rk45(reduced_ODE_system, int nOde, real[] time, real[] a
 \end{minted}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgc7bb1f2}]{Coupled PK-PD system}
+\begin{frame}[fragile,label={sec:org0170c47}]{Coupled PK-PD system}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 real[] pmx_solve_twocpt_rk45(reduced_ODE_system, int nOde, real[] time, real[] amt, real[] rate, real[] ii, int[] evid, int[] cmt, real[] addl, int[] ss, real[] theta, real[] biovar, real[] tlag, real rel_tol, real abs_tol, real max_step)
 \end{minted}
@@ -1228,7 +1230,7 @@ theta = {CL, Q, VC, VP, ka, /* ... */ };
 \end{minted}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org0af7a53}]{Reduced system}
+\begin{frame}[fragile,label={sec:org76c394f}]{Reduced system}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 real[] reduced_system(real time, real[] y, real[] yPK, real[] theta, real[] x_r, int[] x_i) {
   real[3] dydt;
@@ -1238,7 +1240,7 @@ real[] reduced_system(real time, real[] y, real[] yPK, real[] theta, real[] x_r,
 \end{minted}
 \emph{\textcolor{MRGGreen}{Exercise 4 (optional)}: Write, fit, and diagnose a Friberg-Karlsson model with a two compartment with first order absorption PK. Use \texttt{FKModel.r} and \texttt{data/FKModel.data.r}.}
 \end{frame}
-\begin{frame}[label={sec:org484206e}]{Exercise}
+\begin{frame}[label={sec:orgca114a5}]{Exercise 10}
 \emph{Write, fit, and diagnose a Friberg-Karlsson model with a two compartment with first order absorption PK. Use \texttt{FKModel.r} and \texttt{data/FKModel.data.r}.}
 \begin{itemize}
 \item You may either use \texttt{pmx\_solve\_*} or \texttt{pmx\_solve\_twocpt\_*}.
@@ -1249,25 +1251,25 @@ Either edit the event schedule to reflect this at time 0,
 or write the solution to your ODEs as a deviation from the baseline.
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgc2533be}]{Exercise}
+\begin{frame}[label={sec:org637db3b}]{Exercise 10}
 \begin{itemize}
 \item This exercise entails a few subtleties; in the interest of time we won't go through it in class.
 \item Here are however results I get from 3 chains with 500 iterations you can use as a benchmark.
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orga68c97b}]{Exercise}
+\begin{frame}[label={sec:org3f89b73}]{Exercise 10}
 \begin{center}
   \includegraphics[width=7cm]{FKModelPlots002.pdf}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:org65e89c8}]{Exercise}
+\begin{frame}[label={sec:orgc5441c0}]{Exercise 10}
 \begin{center}
   \includegraphics[width=7cm]{FKPairs}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:orge2e0617}]{Exercise}
+\begin{frame}[label={sec:org262e7ea}]{Exercise 10}
 \begin{center}
   \includegraphics[width=7cm]{FKModelPlots006.pdf}
 \end{center}

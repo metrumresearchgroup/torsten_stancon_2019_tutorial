@@ -51,7 +51,7 @@
   }
 #+END_SRC
 /\textcolor{MRGGreen}{Exercise 4 (optional)}: Write, fit, and diagnose a Friberg-Karlsson model with a two compartment with first order absorption PK. Use \texttt{FKModel.r} and \texttt{data/FKModel.data.r}./
-** Exercise
+** Exercise 10
 /Write, fit, and diagnose a Friberg-Karlsson model with a two compartment with first order absorption PK. Use \texttt{FKModel.r} and \texttt{data/FKModel.data.r}./
  - You may either use \texttt{pmx\_solve\_*} or \texttt{pmx\_solve\_twocpt\_*}.
  - Use $\alpha = 3e-4$ and estimate all other 8 ODE coefficients,
@@ -59,22 +59,22 @@
  - The initial state for the neutrophil count is $Circ_0$. 
   Either edit the event schedule to reflect this at time 0, 
   or write the solution to your ODEs as a deviation from the baseline.
-** Exercise
+** Exercise 10
   - This exercise entails a few subtleties; in the interest of time we won't go through it in class.
   - Here are however results I get from 3 chains with 500 iterations you can use as a benchmark.
-** Exercise
+** Exercise 10
 #+begin_src latex
   \begin{center}
     \includegraphics[width=7cm]{FKModelPlots002.pdf}
   \end{center}
 #+end_src
-** Exercise
+** Exercise 10
 #+begin_src latex
   \begin{center}
     \includegraphics[width=7cm]{FKPairs}
   \end{center}
 #+end_src
-** Exercise
+** Exercise 10
 #+begin_src latex
   \begin{center}
     \includegraphics[width=7cm]{FKModelPlots006.pdf}

@@ -86,7 +86,7 @@
 - The group integrators return a single matrix ragged
   column-wise. The number of rows equals to the size of ODE system.
 
-** Exercise
+** Exercise 7
 *** autocatalytic reaction model: ODE group version 
 - Change the loop with the numerical integrator to use group
   integrator.
@@ -94,7 +94,7 @@
   + nb. of rows: nb. of states
   + nb. of cols: nb. of /total/ results-extraction time points.
 
-** Exercise
+** Exercise 7
 *** Build and run
 - Edit/Add =cmdstan/make/local=
 #+BEGIN_SRC sh
@@ -110,7 +110,7 @@
 mpiexec -n 2 -l ./chem_group sample adapt delta=0.95 random seed=1104508041 data file=chem.data.R init=chem.init.R
 #+END_SRC
 
-** Exercise
+** Exercise 7
   + What does output say?
   + How many cores can you use until performance saturates? Why?
   + (optional)Can you do it using Stan's =map_rect=? Is there a difference in style, output, and performance?

@@ -59,7 +59,7 @@
 #+attr_latex: :width 0.6\textwidth
 [[./figures/group_solver_args.pdf]]
 
-** Exercise
+** Time-to-event model
    :PROPERTIES:
    :BEAMER_envargs: [t]
    :END:
@@ -84,7 +84,7 @@
   - To keep things simpler, we use the simulated individual CL and V values, and only model PD part of the problem.
   - PN hazard is substantially delayed relative to PK exposure.
   - Hazard increases over time to an extent not completely described by P
-** Exercise
+** Likelihood
 Likelihood for time to first PN $\ge$ 2 event in the $i^{th}$ patient:
   \begin{align*}
   \lefteqn{L\left(\theta | t_{\text{PN},i}, \text{censor}_i, X_i\right)} \\
@@ -112,7 +112,7 @@ One can see the expression
 \end{equation*}
 as the survival function at time $t$.
 
-** Exercise
+** ODEs
 Hazard of PN grade 2+ based on the Weibull distribution,
 with drug effect proportional to effect site concentration of MMAE:
 \begin{align*}
@@ -129,7 +129,7 @@ Overall ODE system including integration of the hazard function:
   \end{align}
 where $x_2(t) = c_e(t)$ and $x_3(t) = \int_0^t h(u) du$ aka cumulative hazard.
 
-** Exercise: write the ODE system
+** Exercise 8: write the ODE system
 #+BEGIN_SRC stan
   functions{
       real[] oneCptPNODE(real t, real[] x, real[] parms, real[] x_r, int[] x_i){
@@ -147,7 +147,7 @@ where $x_2(t) = c_e(t)$ and $x_3(t) = \int_0^t h(u) du$ aka cumulative hazard.
   }
 #+END_SRC
 
-** Exercise: the ODE system
+** Exercise 8: the ODE system
 #+BEGIN_SRC stan
   real[] oneCptPNODE(real t, real[] x, real[] parms, real[] x_r, int[] x_i){
     real dxdt[3];
@@ -172,7 +172,7 @@ where $x_2(t) = c_e(t)$ and $x_3(t) = \int_0^t h(u) du$ aka cumulative hazard.
   }
 #+END_SRC
 
-** Exercise
+** Parameters
 *** parameters
 #+BEGIN_SRC stan
   parameters{
@@ -194,7 +194,7 @@ where $x_2(t) = c_e(t)$ and $x_3(t) = \int_0^t h(u) du$ aka cumulative hazard.
     /* ... */
   }
 #+END_SRC
-** Exercise
+** Parameters
 #+BEGIN_SRC stan
   transformed parameters{
     vector<lower = 0>[nPNObs] survObs;
@@ -210,10 +210,11 @@ where $x_2(t) = c_e(t)$ and $x_3(t) = \int_0^t h(u) du$ aka cumulative hazard.
     /* ... */
   }
 #+END_SRC
-*** Use =pmx_solve_group_rk45= to solve for =x=.
-*** Write likelihood expressions for =survObs=, =EdrugObs=, =hazardObs=, and =survCens=.
+*** Exercise 9
+    - Use =pmx_solve_group_rk45= to solve for =x=.
+    - Write likelihood expressions for =survObs=, =EdrugObs=, =hazardObs=, and =survCens=.
 
-** Exercise
+** Exercise 9
 - Stan's =target= variable and user-defined likelihood.
 #+BEGIN_SRC stan
   model{
@@ -226,7 +227,7 @@ where $x_2(t) = c_e(t)$ and $x_3(t) = \int_0^t h(u) du$ aka cumulative hazard.
   }
 #+END_SRC
 
-** Exercise
+** Exercise 9
 *** Edit/Add =cmdstan/make/local=
 #+BEGIN_SRC sh
   TORSTEN_MPI = 1         # flag on torsten's MPI solvers
@@ -241,7 +242,7 @@ where $x_2(t) = c_e(t)$ and $x_3(t) = \int_0^t h(u) du$ aka cumulative hazard.
 mpiexec -n 4 -l ttpn2_group sample num_warmup=500 num_samples=500 data file=ttpn2.data2.R init=ttpn2.init.R
 #+END_SRC
 
-** Exercise
+** Exercise 9
 - The parallel performance is not optimal, why?
 - Can you do it using Stan's =map_rect=? 
 

@@ -28,7 +28,7 @@ x_3' &=  k_2x_2^2
 \end{align*}
 Given $k_1=0.04, k_2=3.0e7, k_3=1.0e4$, we make inference
 regarding the initial condition for $x_1(t=0)$.
-*** Exercise
+*** Exercise 4
 Write Stan function for the above ODE's RHS.
 
 ** Stan function for autocatalytic kinetics
@@ -86,7 +86,7 @@ x_3' &=  k_2x_2^2
 - =x_i=: integer data to be passed to $f$.
 
 
-** Exercise
+** Model
 - In each of 8 experiments performed $x3$ is observed.
 - Hierarchical model for $x0[1]$
 #+BEGIN_SRC stan
@@ -100,7 +100,7 @@ x_3' &=  k_2x_2^2
   }
 #+END_SRC
 
-** Exercise
+** Data
 *** Data available for the inference
 #+BEGIN_SRC stan
   data {
@@ -112,7 +112,7 @@ x_3' &=  k_2x_2^2
   }
 #+END_SRC
 
-** Exercise
+** Exercise 5
 ***  Given above data and model, write the rest of Stan code.
 - Hint: use =chem.stan= as template, also see =chem.data.R= and =chem.init.R=.
 - Reaction begins with $A$(on which is also what we'd
@@ -120,7 +120,7 @@ x_3' &=  k_2x_2^2
   non-existent at the beginning of the reaction.
 - Which numerical integrator are you using? Why?
 
-** Exercise
+** Exercise 5
 How to build & run?
 **** Edit/Add =cmdstan/make/local=
 #+BEGIN_SRC sh
