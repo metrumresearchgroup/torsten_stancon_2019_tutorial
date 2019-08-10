@@ -129,16 +129,102 @@ Overall ODE system including integration of the hazard function:
   \end{align}
 where $x_2(t) = c_e(t)$ and $x_3(t) = \int_0^t h(u) du$ aka cumulative hazard.
 
+** Exercise: write the ODE system
+#+BEGIN_SRC stan
+  functions{
+      real[] oneCptPNODE(real t, real[] x, real[] parms, real[] x_r, int[] x_i){
+      real dxdt[3];
+      real CL = parms[1];
+      real V = parms[2];
+      real ke0 = parms[3];
+      real alpha = parms[4];
+      real beta = parms[5];
+      real Edrug;
+      real hazard;
+      /* ... */
+      return dxdt;
+    }
+  }
+#+END_SRC
+
+** Exercise: the ODE system
+#+BEGIN_SRC stan
+  real[] oneCptPNODE(real t, real[] x, real[] parms, real[] x_r, int[] x_i){
+    real dxdt[3];
+    real CL = parms[1];
+    real V = parms[2];
+    real ke0 = parms[3];
+    real alpha = parms[4];
+    real beta = parms[5];
+    real Edrug;
+    real hazard;
+
+    dxdt[1] = -(CL / V) * x[1];
+    dxdt[2] = ke0 * (x[1] / V - x[2]);
+    Edrug = alpha * x[2];
+    if(t == 0){
+      hazard = 0;
+    }else{
+      hazard = beta * Edrug^beta * t^(beta - 1);
+    }
+    dxdt[3] = hazard;
+    return dxdt;
+  }
+#+END_SRC
+
 ** Exercise
-*** "just walk in a minute ago, literally" mode
-   Apply =pmx_solve_group_rk45= function
-*** Intermediate mode
-   Code =pmx_solve_group_rk45= function and its args. Use input data file =ttp2n.data2.R= as hint.
-*** hard mode
-  Code ODE, =pmx_solve_group_rk45= function and its args,
-  and the likelihood for harzard and censor event. Use input
-  data file =ttp2n.data2.R= and =model= block as hint.
-*** "why bother" mode
+*** parameters
+#+BEGIN_SRC stan
+  parameters{
+    real<lower = 0> ke0;
+    real<lower = 0> alpha;
+    real<lower = 0> beta;
+  }
+  transformed parameters{
+    vector<lower = 0>[nPNObs] survObs;
+    row_vector<lower = 0>[nPNObs] EdrugObs;
+    vector<lower = 0>[nPNObs] hazardObs;
+    vector<lower = 0>[nPNCens] survCens;
+    matrix<lower = 0>[3, nt] x;
+    real<lower = 0> parms[nId, 5];
+
+    for(j in 1:nId) {
+      parms[j, ] = {CL[j], V[j], ke0, alpha, beta};
+    }
+    /* ... */
+  }
+#+END_SRC
+** Exercise
+#+BEGIN_SRC stan
+  transformed parameters{
+    vector<lower = 0>[nPNObs] survObs;
+    row_vector<lower = 0>[nPNObs] EdrugObs;
+    vector<lower = 0>[nPNObs] hazardObs;
+    vector<lower = 0>[nPNCens] survCens;
+    matrix<lower = 0>[3, nt] x;
+    real<lower = 0> parms[nId, 5];
+
+    for(j in 1:nId) {
+      parms[j, ] = {CL[j], V[j], ke0, alpha, beta};
+    }
+    /* ... */
+  }
+#+END_SRC
+*** Use =pmx_solve_group_rk45= to solve for =x=.
+*** Write likelihood expressions for =survObs=, =EdrugObs=, =hazardObs=, and =survCens=.
+
+** Exercise
+- Stan's =target= variable and user-defined likelihood.
+#+BEGIN_SRC stan
+  model{
+    ke0 ~ normal(0, 0.0005);
+    alpha ~ normal(0, 0.000003);
+    beta ~ normal(0, 1.5);
+  
+    target += log(hazardObs .* survObs); // observed PN event log likelihood
+    target += log(survCens); // censored PN event log likelihood
+  }
+#+END_SRC
 
 ** Exercise
 *** Edit/Add =cmdstan/make/local=

@@ -1,10 +1,5 @@
 functions{
-
-    real[] oneCptPNODE(real t,
-			real[] x,
-			real[] parms,
-			real[] rdummy,
-			int[] idummy){
+    real[] oneCptPNODE(real t, real[] x, real[] parms, real[] x_r, int[] x_i){
     real dxdt[3];
     real CL = parms[1];
     real V = parms[2];
@@ -26,7 +21,6 @@ functions{
     
     return dxdt;
   }
-
 }
 
 data{
@@ -54,24 +48,6 @@ transformed data{
   int<lower = 1> nCmt = 3;
   real F[nCmt] = rep_array(1.0, nCmt);
   real tLag[nCmt] = rep_array(0.0, nCmt);
-
-  int ntPred = 253;
-  real dt = 12;
-  real tPred[ntPred];
-  real ratePred[ntPred] = rep_array(0.0, ntPred);
-  real iiPred[ntPred];
-  int addlPred[ntPred];
-  int cmtPred[ntPred] = rep_array(1, ntPred);
-  int evidPred[ntPred];   
-  int ssPred[ntPred] = rep_array(0, ntPred);
-
-  iiPred[1] = 21 * 24;
-  iiPred[2:ntPred] = rep_array(0.0, ntPred - 1);
-  addlPred[1] = 5;
-  addlPred[2:ntPred] = rep_array(0, ntPred - 1);
-  evidPred[1] = 1;
-  evidPred[2:ntPred] = rep_array(0, ntPred - 1);
-  for(i in 1:ntPred) tPred[i] = dt * (i - 1);
 }
 
 parameters{

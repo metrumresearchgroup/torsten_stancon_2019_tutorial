@@ -70,7 +70,7 @@ where $x_2(t) = c_e(t)$ and $x_3(t) = \int_0^t h(u) du$ aka cumulative hazard.
 #+END_SRC
 * Run
 #+BEGIN_SRC sh
-mpiexec -n 4 -l ttpn2_group sample num_warmup=500 num_samples=500 data file=ttpn2.data2.R init=ttpn2.init.R
+mpiexec -n 4 -l ./ttpn2_group sample random seed=2146040130 num_warmup=500 num_samples=500 data file=ttpn2.data2.R init=ttpn2.init.R
 #+END_SRC
 
 
