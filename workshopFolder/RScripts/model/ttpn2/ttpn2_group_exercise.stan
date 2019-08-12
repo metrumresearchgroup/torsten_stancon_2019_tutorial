@@ -1,31 +1,53 @@
 functions{
+
     real[] oneCptPNODE(real t,
 			real[] x,
 			real[] parms,
 			real[] rdummy,
 			int[] idummy){
+    real dxdt[3];
+    real CL = parms[1];
+    real V = parms[2];
+    real ke0 = parms[3];
+    real alpha = parms[4];
+    real beta = parms[5];
+    real Edrug;
+    real hazard;
+
     /* ... */
     return dxdt;
   }
+
 }
 
 data{
-  int<lower = 1> nId;    /* population size */
-  int<lower = 1> nt;            /* population's total time steps */
+  int<lower = 1> nId;
+  int<lower = 1> nt;
   int<lower = 1> nPNObs;
   int<lower = 1> nPNCens;
   int<lower = 1> iPNObs[nPNObs];
   int<lower = 1> iPNCens[nPNCens];
+  real<lower = 0> amt[nt];
+  real<lower = 0> rate[nt];
+  real<lower = 0> ii[nt];
+  int<lower = 0> addl[nt];
+  int<lower = 1> cmt[nt];
+  int<lower = 0> evid[nt];
+  int<lower = 1> start[nId];
+  int<lower = 1> end[nId];
   real<lower = 0> time[nt];
   real<lower = 0> CL[nId];
   real<lower = 0> V[nId];
+}
 
-  /*
-    create:
-    pmx_solve_group_rk45() input args:
-    amt, rate, ii, addl, cmt, evid, start, end, len, ss,
-    nCmt, biovar(F), tlag
-  */
+transformed data{
+  int<lower = 0> len[nId];
+  int<lower = 0> ss[nt] = rep_array(0, nt);
+  int<lower = 1> nCmt = 3;
+  real F[nCmt] = rep_array(1.0, nCmt);
+  real tLag[nCmt] = rep_array(0.0, nCmt);
+
+  for(i in 1:nId) len[i] = end[i] - start[i] + 1;
 }
 
 parameters{
@@ -40,25 +62,22 @@ transformed parameters{
   vector<lower = 0>[nPNObs] hazardObs;
   vector<lower = 0>[nPNCens] survCens;
   matrix<lower = 0>[3, nt] x;
+  real<lower = 0> parms[nId, 5];
 
-  /*
-    create pmx_solve_group_rk45() argument "parms",
-    use ODE function as hint.
-  */
-  
-  /* 
-     x = pmx_solve_group_rk45( ? ... );
-  */
+  /* ... */
 
   for(i in 1:nPNObs) {
-    survObs[i] = /* ? */    
+    /* ... */
   }
-  EdrugObs = /* ? */ ;
+
+  EdrugObs = alpha * x[2, iPNObs];
+
   for(i in 1:nPNObs) {
-    hazardObs[i] = /* ? */ ;
+    /* ... */
   }
+
   for(i in 1:nPNCens) {
-    survCens[i] = /* ? */ ;
+    /* ... */
   }
 }
 
