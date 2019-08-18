@@ -19,7 +19,8 @@
 \usetheme{default}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
-\definecolor{MRGGreen}{rgb}{0, 0.350, 0.200}
+% \definecolor{MRGGreen}{rgb}{0, 0.350, 0.200}
+\definecolor{MRGGreen}{rgb}{0, 0, 0.6}  % make consistent with other colors
 \graphicspath{{./figures/}}
 \setbeamertemplate{section in toc}[sections numbered]
 \usetheme{default}
@@ -184,6 +185,43 @@ Prior:
 \end{align*}
 \end{frame}
 
+\begin{frame}
+  \begin{center}
+  \includegraphics[width=4.5in]{figures/linear_summary.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+  \includegraphics[width=4.5in]{figures/linear_trace.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+  \includegraphics[width=4.5in]{figures/linear_dens_plot.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+  \includegraphics[width=4.5in]{figures/linear_pred.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{So, how can we improve the model?}
+Likelihood:
+\begin{align*}
+  Y \sim \mathrm{Normal}(x \beta, \sigma^2)
+\end{align*}
+
+Prior:
+\begin{align*}
+  \beta \sim & \mathrm{Normal}(2, 1) \\
+  \sigma^2 \sim & \mathrm{Normal}(1, 1)
+\end{align*}
+\end{frame}
+
 \section{Models in pharmacometrics | \footnotesize{Charles Margossian}}
 \label{sec:org62126be}
 \begin{frame}[label={sec:org9b9ea6d}]{What is the effect of a treatment on a patient?}
@@ -226,8 +264,8 @@ the \textcolor{MRGGreen}\{\textit{natural evolution}\} of the system at any give
 \begin{frame}[label={sec:orgc747b2d}]{The event schedule}
 An event can be:
 \begin{itemize}
-\item \textcolor{MRGGreen}{Sate changer}: an (exterior) intervention that alters the state of the system; for example a bolus dosing or the beginning of an infusion.
-\item \textcolor{MRGGreen}{Observation}: a measurement of a quantity of interest at a certain time.
+\item \textcolor{MRGGreen}{a state changer}: an (exterior) intervention that alters the state of the system; for example a bolus dosing or the beginning of an infusion.
+\item \textcolor{MRGGreen}{an observation}: a measurement of a quantity of interest at a certain time.
 \end{itemize}
 \end{frame}
 
@@ -316,8 +354,8 @@ sigma ~ cauchy(0, 1);
 \begin{align*}
   \log(cObs) \sim \mathrm{Normal}\left( \log \left(\frac{y_2}{VC} \right), \sigma^2 \right)
 \end{align*}
-\emph{\textcolor{MRGGreen}{Exercise 1}: write and fit this model, using \texttt{twoCptModel.r} and  \texttt{model/twoCptModel.stan}.}
-\emph{\textcolor{MRGGreen}{Exercise 2}: Write a generated quantities block and do posterior predictive checks.}
+\emph{\textcolor{MRGGreen}{Exercise 1 \\ (a)} write and fit this model, using \texttt{twoCptModel.r} and  \texttt{model/twoCptModel.stan}.} \\
+\emph{\textcolor{MRGGreen}{(b)} write a generated quantities block and do posterior predictive checks.}
 \end{block}
 \end{frame}
 
@@ -371,6 +409,8 @@ matrix = pmx_solve_linode(real[] time, real[] amt, real[] rate,
                      matrix K, real[] biovar, real[] tlag)
 \end{minted}
 \end{frame}
+
+
 \begin{frame}[fragile,label={sec:org259582c}]{Numerical integrator}
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 real[ , ] pmx_integrate_ode_rk45(ODE_RHS, real[] y0, real t0, real[] ts, real[] theta, real[] x_r, int[] x_i, real rtol = 1.e-6, real atol = 1.e-6, int max_step = 1e6);
@@ -407,7 +447,11 @@ functions {
  \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
 matrix pmx_solve_rk45(ODE_system, int nCmt, real[] time, real[] amt, real[] rate, real[] ii, int[] evid, int[] cmt, real[] addl, int[] ss, real[] theta, real[] biovar, real[] tlag, real rel_tol, real abs_tol, int max_step);
 \end{minted}
-\emph{\textcolor{MRGGreen}{Exercise 3}: Write, fit, and diagnose the two compartment model using the \texttt{pmx\_solve\_rk45} function.}
+\\ \ \\
+
+\emph{\textcolor{MRGGreen}{Exercise 2}: Write, fit, and diagnose the two compartment model using (a) the \texttt{pmx\_solve\_rk45} function
+and (b) the \texttt{pmx\_solve\_linode} function. \\
+Do the results agree? How does performance vary?}
 \end{frame}
 
 \section{Numerical ODE integrators | \footnotesize{Yi Zhang}}
@@ -441,7 +485,7 @@ x_3' &=  k_2x_2^2
 \end{align*}
 Given \(k_1=0.04, k_2=3.0e7, k_3=1.0e4\), we make inference
 regarding the initial condition for \(x_1(t=0)\).
-\begin{block}{Exercise 4}
+\begin{block}{Exercise 3}
 Write Stan function for the above ODE's RHS.
 \end{block}
 \end{frame}
@@ -551,7 +595,7 @@ data {
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orgc613ea2}]{Exercise 5}
+\begin{frame}[fragile,label={sec:orgc613ea2}]{Exercise 4}
  \begin{block}{Given above data and model, write the rest of Stan code.}
 \begin{itemize}
 \item Hint: use \texttt{chem.stan} as template, also see \texttt{chem.data.R} and \texttt{chem.init.R}.
@@ -563,7 +607,7 @@ non-existent at the beginning of the reaction.
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label={sec:org94f9094}]{Exercise 5}
+\begin{frame}[fragile,label={sec:org94f9094}]{Exercise 4}
  How to build \& run?
 \begin{block}{Edit/Add \texttt{cmdstan/make/local}}
 \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{sh}
@@ -589,7 +633,7 @@ make path_to_workshop/RScript/model/chemical_reactions/chem
 \begin{itemize}
 \item sport measurements are grouped by players
 \item people's voting intention can be grouped by states, social status, etc.
-\item medical measurements are grouped by patients
+\item medical measurements can be grouped by patients, age groups, treatments, etc.
 \end{itemize}
 \end{frame}
 
@@ -638,7 +682,7 @@ Likelihood function:
 \end{align*}
 \end{frame}
 
-\begin{frame}[label={sec:org0bce690}]{Exercise 6: Write, fit, and diagnose a hierarchical two}
+\begin{frame}[label={sec:org0bce690}]{Exercise 5: Write, fit, and diagnose a hierarchical two}
 compartment model for a population of 10 patients.
 Use \texttt{data/twoCptPop.data.r} and \texttt{twoCptPop.r}.\}
 \begin{itemize}
@@ -672,13 +716,13 @@ $$ \alpha_i \sim \mathrm{Normal}(\mu, \sigma) $$
 
 Fitting this model yields the following pairs plot:
 \begin{center}
-  \includegraphics[width=5cm]{pairs_baseball2.png}
+  \includegraphics[width=3in]{pairs_baseball2.png}
 \end{center}
 \end{frame}
 
 \begin{frame}[label={sec:orgf9973ed}]{Divergent transitons}
 \begin{center}
-  \includegraphics[width=5cm]{pairs_baseball2.png}
+  \includegraphics[width=3in]{pairs_baseball2.png}
 \end{center}
 
 \begin{itemize}
@@ -721,13 +765,13 @@ Our model is a little more complicated than the above example:
 
 \begin{frame}[label={sec:orga5806a1}]{Reparameterization}
 \begin{center}
-  \includegraphics[width=9cm]{twoCptPairs1}
+  \includegraphics[width=12cm]{twoCptPairs1}
 \end{center}
 \end{frame}
 
 \begin{frame}[label={sec:orgb9d6a71}]{Reparameterization}
 \emph{\textcolor{MRGGreen}{Exercise 6}}:
-  Reparametrize the two compartment population model and fit it.\}
+  Reparametrize the two compartment population model and fit it.
 \begin{itemize}
 \item First, work out the appropriate parametrization. You should start with \(\log \theta_i \sim \mathrm{Normal}(\theta_{\mathrm{pop}, i}, \omega)\)
 \item Write, fit, and check the inference (run 100 chains).
@@ -1178,102 +1222,113 @@ mpiexec -n 4 -l ttpn2_group sample num_warmup=500 num_samples=500 data file=ttpn
 \end{itemize}
 \end{frame}
 
-%\section{Additional nonlinear ODE example | \footnotesize{Charles Margossian}}
-%\label{sec:org82b7e7f}
-%\begin{frame}[label={sec:org441612d}]{Friberg-Karlsson semi-mechanistic model \cite{Friberg:2002}}
-%\begin{center}
-%  \includegraphics[width=8.5cm]{Friberg-Karlsson_drug}
-%\end{center}
-%\end{frame}
-%
-%\begin{frame}[label={sec:org2eb8338}]{ODE system of F-K model}
-%\begin{align*}\label{eq:FK}
-%y_{\mathrm{prol}}' &= k_{\mathrm{tr}} y_{\mathrm{prol}} (1 - {\color{red}E_{\mathrm{drug}}})\left(\frac{Circ_0}
-%  {y_{\mathrm{circ}}}\right)^\gamma - k_{\mathrm{tr}}y_{\mathrm{prol}} \\
-%y_{\mathrm{tr1}}' &= k_{\mathrm{tr}} y_{\mathrm{prol}} - k_{\mathrm{tr}} y_{\mathrm{tr1}} \\
-%y_{\mathrm{tr2}}' &= k_{\mathrm{tr}} y_{\mathrm{tr1}} - k_{\mathrm{tr}} y_{\mathrm{tr2}} \\
-%y_{\mathrm{tr3}}' &= k_{\mathrm{tr}} y_{\mathrm{tr2}} - k_{\mathrm{tr}} y_{\mathrm{tr3}} \\
-%y_{\mathrm{circ}}' &= k_{\mathrm{tr}} y_{\mathrm{tr3}} - k_{\mathrm{tr}} y_{\mathrm{circ}} 
-%\end{align*}
-%
-%where \(E_\mathrm{drug} = \alpha \frac{y_{\mathrm{cent}}}{V_{\mathrm{cent}}}\),
-%\(ktr = 4 / MTT\),
-%and \(\alpha \approx 3e-4\).
-%\begin{itemize}
-%\item \(y_\mathrm{cent}\) is obtained from a two compartment model.
-%\item Our PK/PD model therefore has a total of 8 equations.
-%\item This problem can be solved using \texttt{pmx\_solve\_*}.
-%\end{itemize}
-%\end{frame}
-%\begin{frame}[fragile,label={sec:orgb5bf813}]{Coupled PK-PD system}
-% Alternatively, we may elect to solve the PK ODEs \textcolor{MRGGreen}{analytically} 
-%and the PD ODEs \textcolor{MRGGreen}{numerically}.
-%\begin{itemize}
-%\item This can yield some speedup, in particular for problems that require ODE solutions and sensitivities (e.g \cite{Margossian:2017b}).
-%\end{itemize}
-%\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
-%real[] pmx_solve_twocpt_rk45(reduced_ODE_system, int nOde, real[] time, real[] amt, real[] rate, real[] ii, int[] evid, int[] cmt, real[] addl, int[] ss, real[] theta, real[] biovar, real[] tlag, real rel_tol, real abs_tol, real max_step)
-%\end{minted}
-%\end{frame}
-%
-%\begin{frame}[fragile,label={sec:org0170c47}]{Coupled PK-PD system}
-% \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
-%real[] pmx_solve_twocpt_rk45(reduced_ODE_system, int nOde, real[] time, real[] amt, real[] rate, real[] ii, int[] evid, int[] cmt, real[] addl, int[] ss, real[] theta, real[] biovar, real[] tlag, real rel_tol, real abs_tol, real max_step)
-%\end{minted}
-%\begin{itemize}
-%\item we now pass a "reduced system".
-%\item we specify the number of ODEs to be solved numerically, not the number of compartments.
-%\item \texttt{theta} now contains the parameters for the two cpt model, followed by the parameters that get passed to the numerical solver:
-%\end{itemize}
-%\begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
-%theta = {CL, Q, VC, VP, ka, /* ... */ };
-%\end{minted}
-%\end{frame}
-%
-%\begin{frame}[fragile,label={sec:org76c394f}]{Reduced system}
-% \begin{minted}[breaklines=true,fontsize=\footnotesize,breakanywhere=true]{stan}
-%real[] reduced_system(real time, real[] y, real[] yPK, real[] theta, real[] x_r, int[] x_i) {
-%  real[3] dydt;
-%  /* .... */
-%  return dydt;
-%}
-%\end{minted}
-%\emph{\textcolor{MRGGreen}{Exercise 4 (optional)}: Write, fit, and diagnose a Friberg-Karlsson model with a two compartment with first order absorption PK. Use \texttt{FKModel.r} and \texttt{data/FKModel.data.r}.}
-%\end{frame}
-%\begin{frame}[label={sec:orgca114a5}]{Exercise 10}
-%\emph{Write, fit, and diagnose a Friberg-Karlsson model with a two compartment with first order absorption PK. Use \texttt{FKModel.r} and \texttt{data/FKModel.data.r}.}
-%\begin{itemize}
-%\item You may either use \texttt{pmx\_solve\_*} or \texttt{pmx\_solve\_twocpt\_*}.
-%\item Use \(\alpha = 3e-4\) and estimate all other 8 ODE coefficients,
-%i.e. \(\theta = \{ CL, Q, VC, VP, ka, MTT, circ0, \gamma \}\).
-%\item The initial state for the neutrophil count is \(Circ_0\). 
-%Either edit the event schedule to reflect this at time 0, 
-%or write the solution to your ODEs as a deviation from the baseline.
-%\end{itemize}
-%\end{frame}
-%\begin{frame}[label={sec:org637db3b}]{Exercise 10}
-%\begin{itemize}
-%\item This exercise entails a few subtleties; in the interest of time we won't go through it in class.
-%\item Here are however results I get from 3 chains with 500 iterations you can use as a benchmark.
-%\end{itemize}
-%\end{frame}
-%\begin{frame}[label={sec:org3f89b73}]{Exercise 10}
-%\begin{center}
-%  \includegraphics[width=7cm]{FKModelPlots002.pdf}
-%\end{center}
-%\end{frame}
-%
-%\begin{frame}[label={sec:orgc5441c0}]{Exercise 10}
-%\begin{center}
-%  \includegraphics[width=7cm]{FKPairs}
-%\end{center}
-%\end{frame}
-%
-%\begin{frame}[label={sec:org262e7ea}]{Exercise 10}
-%\begin{center}
-%  \includegraphics[width=7cm]{FKModelPlots006.pdf}
-%\end{center}
-%\end{frame}
+
+%%%%%
+\begin{frame}
+  \begin{center}
+    {\Large Concluding Remarks}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Where does Stan fit in the pharmacometrician's toolkit?}
+
+  Bayesian modeling can be implemented using an array of softwares:
+  \begin{itemize}
+    \item probabilistic programing languages: TensorFlow probability,
+    PyMC3, Edward
+    \item pharmacometrics softwares: NONMEM, Monolix, etc.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Where does Stan fit in the pharmacometrician's toolkit?}
+  There is synergy between the research we do, and the development
+  of other softwares:
+  \begin{itemize}
+    \item PyMC3, Edward, and NONMEM implement Stan's No-U Turn Sampler.
+    \item Torsten borrows many of NONMEM's conventions
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{What do Stan and Torsten bring to the table?}
+  
+  Currently:
+  \begin{itemize}
+    \item a very flexible and expressive language
+    \item algorithms that are efficient and fast for a full Bayesian inference, 
+    and that warn you when they fail.
+    \item Diagnostic tools
+    \item It's free and open-source
+  \end{itemize}
+
+  Our goals:
+  \begin{itemize}
+    \item More expressive features: PDEs and SDEs
+    \item Algorithms for fast approximate Bayesian inference
+    (variational inference, nested Laplace).
+    \item High performance tools: GPU, within solver parallelization.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{What we covered}
+  
+  \begin{itemize}
+    \item Writing and fitting compartment models with Torsten
+    \item Defining ODEs and picking a numerical solver
+    \item Building and parameterizing a population model
+    \item Within-chain parallelization for population models
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{What we didn't cover}
+  
+  \begin{itemize}
+    \item Computing steady states with an algebraic solver.
+    \item Combining multiple solvers, e.g. analytical and numerical methods
+    \item More elaborate problems that combine all the moving parts we went through
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Where can I learn more?}
+     \begin{itemize}
+     \item The Stan book and the Torsten manual
+     \item Bill Gillespie's workshop: \textit{Advanced use of Stan, Rstan, and Torsten
+     for pharmacometric applications}
+     \item Contributions to the Stan Conference: \url{https://github.com/stan-dev/stancon talks}
+     \item Online tutorials: \url{https://mc-stan.org/users/documentation/tutorials.html}
+     \item Betancourt's case studies: \url{https://betanalpha.github.io/writing/}
+   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Acknowledgments}
+
+   \ \\ Torsten development team:
+  \begin{itemize}
+    \item Bill Gillespie
+  \end{itemize}
+  
+  \ \\ Stan development team:
+  \begin{itemize}
+    \item Sebastian Weber
+     \item Andrew Gelman
+    \item Michael Betancourt
+    \item Bob Carpenter
+  \end{itemize}
+  
+  \ \\ Institututions:
+  \begin{itemize}
+    \item Metrum Research Group
+    \item Columbia University
+  \end{itemize}
+
+\end{frame}
 
 \begin{frame}[allowframebreaks]{Reference}
 \bibliographystyle{apalike}
