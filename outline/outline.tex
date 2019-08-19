@@ -48,6 +48,7 @@ at Stan Con 2019, which participants can attend before coming to this workshop.
 \textbf{Outline:} \\
 %
   \begin{enumerate}
+  \item Course information
    \item Introduction
    \begin{itemize}
      \item Modeling framework: build, fit, and criticize
@@ -64,30 +65,46 @@ at Stan Con 2019, which participants can attend before coming to this workshop.
      \end{itemize}
    %
    %
-   \item Ordinary differential equations in Stan
+   \item Ordinary differential equations in Stan and Torsten
    \begin{itemize}
      \item Arsenal of tools to solve ODEs
      \item Matrix exponential solution for linear ODEs
      \item Numerical integrators for nonlinear ODEs
      \item \textit{Exercise 2: write, fit, and diagnose a two compartment 
-     model with the ODE integrator}
-     \item Combining analytical and numerical integrators
-     \item \textit{Exercise 3 (optional): the Friberg-Karlsson model}
+     model with the ODE integrator or Matrix exponential solver}
+   \end{itemize}
+   %
+   %
+   \item Numerical ODE integrators
+   \begin{itemize}
+     \item example: kinetics of autocatalytic reaction
+     \item \textit{Exercise 3: specify ODE system for autocatalytic reaction model}
+     \item Numerical integrators: rk45, bdf, and Adams-Moulton
+     \item \textit{Exercise 4: build and fit the full autocatalytic reaction model}
    \end{itemize}
    %
    %
    \item Population models
    \begin{itemize}
      \item Review of hierarchical models
-     \item \textit{Exercise 4: write, fit, and diagnose a population two compartment model}
+     \item \textit{Exercise 5: write, fit, and diagnose a population two compartment model}
      \item Divergent transitions and where they come from
-     \item \textit{Exercise 5: re-parametrize the population two compartment model}
+     \item \textit{Exercise 6: re-parametrize the population two compartment model}
    \end{itemize}
    %
-   \item Within chain parallelization
+   \item ODE group integrators
+   \begin{itemize}
+     \item group integrators in Torsten
+     \item \textit{Exercise 6: parallelize the autocatalytic reaction model using the group integrator}
+   \end{itemize}
    %
-   \item Open discussion and concluding remarks
- 
+   \item PMX population solvers
+   \begin{itemize}
+     \item Time to event model
+     \item \textit{Exercise 7: specify the ODE system for time to event model.}
+     \item \textit{Exercise 8: use the group solver to parallel solve the ODE}
+   \end{itemize}
+   \item Open discussion and concluding remarks.
  \end{enumerate}
 
 
