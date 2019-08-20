@@ -56,7 +56,7 @@ stan_dens(fit, separate_chains = TRUE, pars = pars)
 # Fit the model with a non-centered parametrization.
 fit2 <- stan(file = "model/twoCptPopulationModel2.stan",
              data = data, init = init,
-             iter = 100, chains = 3, cores = 3)
+             iter = 500, chains = 3, cores = 3)
 
 summary(fit2, pars)[1]
 traceplot(fit2, pars = pars)
